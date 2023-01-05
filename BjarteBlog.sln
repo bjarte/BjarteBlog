@@ -1,0 +1,63 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31423.177
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5FE177A6-5920-4EF4-9227-88CF84382900}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A82D2F4-6BC6-42A3-A3E9-6B53ED6E39F5}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contentful", "Contentful", "{77BB3DBF-0B1C-451C-9B98-EB0EA9A15C31}"
+	ProjectSection(SolutionItems) = preProject
+		Contentful\content-model.json = Contentful\content-model.json
+		Contentful\export-config.json = Contentful\export-config.json
+		Contentful\import-config.json = Contentful\import-config.json
+		Contentful\README.md = Contentful\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog", "src\Blog\Blog.csproj", "{B23AAB61-A6DF-422F-9059-02CE17A12FF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "tests\Core.Tests\Core.Tests.csproj", "{FD252262-2E38-484C-A6A5-D49E640FBE47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.csproj", "{8FAFD187-922C-45C1-8D5F-9FBA37560531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E4D1E908-BD2B-4764-A357-A649D161972C}"
+	ProjectSection(SolutionItems) = preProject
+		docs\HowToStoreUserSecrets.md = docs\HowToStoreUserSecrets.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B23AAB61-A6DF-422F-9059-02CE17A12FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23AAB61-A6DF-422F-9059-02CE17A12FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23AAB61-A6DF-422F-9059-02CE17A12FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23AAB61-A6DF-422F-9059-02CE17A12FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD252262-2E38-484C-A6A5-D49E640FBE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD252262-2E38-484C-A6A5-D49E640FBE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD252262-2E38-484C-A6A5-D49E640FBE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD252262-2E38-484C-A6A5-D49E640FBE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FAFD187-922C-45C1-8D5F-9FBA37560531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FAFD187-922C-45C1-8D5F-9FBA37560531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FAFD187-922C-45C1-8D5F-9FBA37560531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FAFD187-922C-45C1-8D5F-9FBA37560531}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{77BB3DBF-0B1C-451C-9B98-EB0EA9A15C31} = {9A82D2F4-6BC6-42A3-A3E9-6B53ED6E39F5}
+		{FD252262-2E38-484C-A6A5-D49E640FBE47} = {5FE177A6-5920-4EF4-9227-88CF84382900}
+		{E4D1E908-BD2B-4764-A357-A649D161972C} = {9A82D2F4-6BC6-42A3-A3E9-6B53ED6E39F5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAF23414-BB36-499E-8204-0213CE4BF0F7}
+	EndGlobalSection
+EndGlobal

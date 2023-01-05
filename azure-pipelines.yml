@@ -1,0 +1,49 @@
+trigger:
+- main
+- feature/*
+
+pool:
+  vmImage: 'windows-2022'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET 7.x'
+  inputs:
+    packageType: 'sdk'
+    version: '7.x'
+    includePreviewVersions: true
+
+# - task: DotNetCoreCLI@2
+#   displayName: 'dotnet test'
+#   inputs:
+#     command: 'test'
+#     arguments: '--configuration $(buildConfiguration)'
+#     projects: '**/*.Tests.csproj'
+    
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    projects: 'src/Blog/Blog.csproj'
+    command: 'publish'
+    arguments: '--configuration $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+    publishWebProjects: false
+    zipAfterPublish: true
+    modifyOutputPath: true
+
+- task: FileTransform@1
+  displayName: 'File transformation: appsettings.json'
+  inputs:
+    folderPath: '$(Build.ArtifactStagingDirectory)/Blog.zip'
+    targetFiles: '**/appsettings.json'
+    fileType: json
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish package to deploy pipeline'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop'
