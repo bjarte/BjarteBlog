@@ -18,12 +18,12 @@ steps:
     version: '7.x'
     includePreviewVersions: true
 
-# - task: DotNetCoreCLI@2
-#   displayName: 'dotnet test'
-#   inputs:
-#     command: 'test'
-#     arguments: '--configuration $(buildConfiguration)'
-#     projects: '**/*.Tests.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration)'
+    projects: '**/*.Tests.csproj'
     
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
