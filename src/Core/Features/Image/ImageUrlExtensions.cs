@@ -47,7 +47,6 @@ public static class ImageExtensions
                 SrcSet = srcSet
             };
         }
-
     }
 
     public static string GetUrlWithAttribute(this ImageViewModel image, int width = 0, int height = 0)
