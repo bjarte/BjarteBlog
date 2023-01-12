@@ -24,7 +24,7 @@
                     <h2>@blogPost.Title</h2>
                 </a>
 
-                <p><time>@blogPost.CreatedAt?.ToString("D")</time></p>
+                <p><time>@blogPost.PublishedAt?.ToString("D")</time></p>
 
                 @if (blogPost.Categories?.Any() == true)
                 {

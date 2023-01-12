@@ -18,6 +18,7 @@ public class BlogPostViewModel : BasePageViewModel
 
     public string TypeformFormId { get; set; }
 
+    public DateTime? PublishedAt { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
@@ -43,6 +44,7 @@ public class BlogPostViewModel : BasePageViewModel
 
         TypeformFormId = content.TypeformFormId;
 
+        PublishedAt = content.PublishedAt;
         CreatedAt = content.Sys?.CreatedAt;
         UpdatedAt = content.Sys?.UpdatedAt;
     }

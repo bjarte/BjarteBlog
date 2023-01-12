@@ -28,7 +28,11 @@
             </p>
 
             @Html.Raw(blogPost.Body)
-
+            
+            <p>
+                Published:<br />
+                <time>@blogPost.PublishedAt?.ToString("f")</time>
+            </p>
             <p>
                 Created:<br />
                 <time>@blogPost.CreatedAt?.ToString("f")</time>

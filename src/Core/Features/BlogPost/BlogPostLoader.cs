@@ -29,7 +29,7 @@ public class BlogPostLoader : IBlogPostLoader
         _previewClient = new ContentfulClient(new HttpClient(), options);
 
         _orderNewestFirst = SortOrderBuilder<BlogPostContent>
-            .New(_ => _.Sys.CreatedAt, SortOrder.Reversed)
+            .New(_ => _.PublishedAt, SortOrder.Reversed)
             .Build();
     }
 
