@@ -8,7 +8,7 @@
 
 @{
     const int imageWidth = 1024;
-    const int imageHeight = 512;
+    const int imageHeight = 768;
 }
 
 <figure>
@@ -31,7 +31,7 @@
             {
                 <source media="@source.Media" srcset="@source.SrcSet">
             }
-            <img src="@Model.GetUrl(imageWidth)" alt="@Model.AltText" width="@imageWidth" height="@imageHeight">
+            <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth" height="@imageHeight">
         </picture>
     }
 

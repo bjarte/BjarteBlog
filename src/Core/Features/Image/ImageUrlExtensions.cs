@@ -48,14 +48,4 @@ public static class ImageExtensions
             };
         }
     }
-
-    public static string GetUrlWithAttribute(this ImageViewModel image, int width = 0, int height = 0)
-    {
-        return $"{image.GetUrl(width, height)} {width}w";
-    }
-
-    public static int GetHeight(this ImageViewModel image, int width)
-    {
-        return image.OriginalHeight * width / image.OriginalWidth;
-    }
 }
