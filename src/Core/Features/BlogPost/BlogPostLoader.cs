@@ -14,11 +14,13 @@ public class BlogPostLoader : IBlogPostLoader
 {
     private readonly IContentfulClient _contentDeliveryClient;
     private readonly IContentfulClient _previewClient;
+    private readonly IRichTextLoader _richTextLoader;
     private readonly string _orderNewestFirst;
 
     public BlogPostLoader(
         IAppSettingsService appSettingsService,
-        IContentfulClient contentDeliveryClient
+        IContentfulClient contentDeliveryClient,
+        IRichTextLoader richTextLoader
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -31,6 +33,8 @@ public class BlogPostLoader : IBlogPostLoader
         _orderNewestFirst = SortOrderBuilder<BlogPostContent>
             .New(_ => _.PublishedAt, SortOrder.Reversed)
             .Build();
+
+        _richTextLoader = richTextLoader;
     }
 
     public async Task<BlogPostContent> GetBlogPost(string slug)
@@ -49,8 +53,12 @@ public class BlogPostLoader : IBlogPostLoader
             .GetEntries(query);
 
         var blogPost = blogPosts.FirstOrDefault();
+        if (blogPost == null)
+        {
+            return null;
+        }
 
-        blogPost.BodyToHtml();
+        blogPost.BodyString = _richTextLoader.BodyToHtml(blogPost);
         return blogPost;
     }
 
@@ -70,8 +78,12 @@ public class BlogPostLoader : IBlogPostLoader
             .GetEntries(query);
 
         var blogPost = blogPosts.FirstOrDefault();
+        if (blogPost == null)
+        {
+            return null;
+        }
 
-        blogPost.BodyToHtml();
+        blogPost.BodyString = _richTextLoader.BodyToHtml(blogPost);
         return blogPost;
     }
 

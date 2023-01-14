@@ -33,9 +33,12 @@ public class PageLoader : IPageLoader
     //
     //private IContentfulManagementClient _contentManagementClient;
 
+    private readonly IRichTextLoader _richTextLoader;
+
     public PageLoader(
         IAppSettingsService appSettingsService,
-        IContentfulClient contentDeliveryClient
+        IContentfulClient contentDeliveryClient,
+        IRichTextLoader richTextLoader
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -44,6 +47,8 @@ public class PageLoader : IPageLoader
         options.UsePreviewApi = true;
 
         _previewClient = new ContentfulClient(new HttpClient(), options);
+
+        _richTextLoader = richTextLoader;
     }
 
     public async Task<PageContent> GetPage(string slug)
@@ -65,8 +70,12 @@ public class PageLoader : IPageLoader
             .GetEntries(query);
 
         var page = pages.FirstOrDefault();
+        if (page == null)
+        {
+            return null;
+        }
 
-        page.BodyToHtml();
+        page.BodyString = _richTextLoader.BodyToHtml(page);
         return page;
     }
 
@@ -86,8 +95,12 @@ public class PageLoader : IPageLoader
             .GetEntries(query);
 
         var page = pages.FirstOrDefault();
+        if (page == null)
+        {
+            return null;
+        }
 
-        page.BodyToHtml();
+        page.BodyString = _richTextLoader.BodyToHtml(page);
         return page;
     }
 
