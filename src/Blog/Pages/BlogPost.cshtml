@@ -30,16 +30,7 @@
             @Html.Raw(blogPost.Body)
             
             <p>
-                Published:<br />
-                <time>@blogPost.PublishedAt?.ToString("f")</time>
-            </p>
-            <p>
-                Created:<br />
-                <time>@blogPost.CreatedAt?.ToString("f")</time>
-            </p>
-            <p>
-                Last updated:<br />
-                <time>@blogPost.UpdatedAt?.ToString("f")</time>
+                Published: <time>@blogPost.PublishedAt?.ToString("f")</time>
             </p>
 
             <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
