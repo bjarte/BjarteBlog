@@ -28,7 +28,7 @@ public partial class IndexModel : BasePageModel
         if (YearRegex().IsMatch(year ?? string.Empty)
             && MonthRegex().IsMatch(month ?? string.Empty))
         {
-            return RedirectToPage("BlogPost", new { id = slug });
+            return RedirectToPagePermanent("BlogPost", new { id = slug });
         }
 
         if (!disableCache)
