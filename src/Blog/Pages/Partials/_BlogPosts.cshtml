@@ -11,7 +11,10 @@
     @foreach (var blogPost in Model)
     {
         var blogPostUrl = Url.Page("BlogPost", new { id = blogPost.Slug });
-        blogPost.Image.LinkUrl = blogPostUrl;
+        if (blogPost.Image != null)
+        {
+            blogPost.Image.LinkUrl = blogPostUrl;
+        }
 
         <div class="blogpost-list-item">
 
