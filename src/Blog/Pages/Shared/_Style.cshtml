@@ -2,19 +2,19 @@
 
     /*
 
-    Colour palette:
-    https://coolors.co/4357ad-48a9a6-e4dfda-d4b483-c1666b
+            Colour palette:
+            https://coolors.co/4357ad-48a9a6-e4dfda-d4b483-c1666b
 
-    Dark
-    #283469 Space Cadet (blue)
-    #2A6260 Skobeloff (teal)
+            Dark
+            #283469 Space Cadet (blue)
+            #2A6260 Skobeloff (teal)
 
-    Light
-    #FCF6F0 Isabelline (grey)
-    #FFDFB1 Navajo White (brown)
-    #FFD4D6 Pale Pink (pink)
+            Light
+            #FCF6F0 Isabelline (grey)
+            #FFDFB1 Navajo White (brown)
+            #FFD4D6 Pale Pink (pink)
 
-    */
+            */
 
     body {
         background-color: #FCF6F0;
@@ -179,6 +179,10 @@
             background-color: #222222;
             filter: invert(100%);
         }
+            /* Syntax highlighter on <code> elements is always dark */
+            body code {
+                filter: invert(100%);
+            }
 
             body img {
                 filter: invert(100%);
