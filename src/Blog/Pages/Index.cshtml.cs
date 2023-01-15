@@ -1,10 +1,11 @@
-﻿using Core.Features.BlogPost;
+﻿using System.Text.RegularExpressions;
+using Core.Features.BlogPost;
 using Core.Features.BlogPost.Models;
 using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public class IndexModel : BasePageModel
+public partial class IndexModel : BasePageModel
 {
     private readonly IBlogPostLoader _blogPostLoader;
     private readonly INavigationLoader _navigationLoader;
@@ -20,8 +21,16 @@ public class IndexModel : BasePageModel
 
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public IActionResult OnGet(bool disableCache = false)
+    public IActionResult OnGet(bool disableCache = false, string year = null, string month = null, string slug = null)
     {
+        // Handle old blog urls on the format
+        // /2019/03/blog-post-slug
+        if (YearRegex().IsMatch(year ?? string.Empty)
+            && MonthRegex().IsMatch(month ?? string.Empty))
+        {
+            return RedirectToPage("BlogPost", new { id = slug });
+        }
+
         if (!disableCache)
         {
             HttpContext.EnableOutputCaching(
@@ -45,4 +54,9 @@ public class IndexModel : BasePageModel
 
         return Page();
     }
+
+    [GeneratedRegex("^\\d\\d\\d\\d$")]
+    private static partial Regex YearRegex();
+    [GeneratedRegex("^\\d\\d$")]
+    private static partial Regex MonthRegex();
 }

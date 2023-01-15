@@ -1,4 +1,6 @@
-﻿@page "{id?}"
+﻿@* Handle old blog urls on the format
+ /2019/03/blog-post-slug *@
+@page "{year?}/{month?}/{slug?}"
 @model IndexModel
 
 @if (Model == null)
