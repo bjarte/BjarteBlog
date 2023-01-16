@@ -6,7 +6,7 @@ using Contentful.Core;
 using Contentful.Core.Search;
 using Core.Features.AppSettings;
 using Core.Features.BlogPost.Models;
-using Core.Features.Editorial;
+using Core.Features.Renderers;
 
 namespace Core.Features.BlogPost;
 
@@ -14,13 +14,13 @@ public class BlogPostLoader : IBlogPostLoader
 {
     private readonly IContentfulClient _contentDeliveryClient;
     private readonly IContentfulClient _previewClient;
-    private readonly IRichTextLoader _richTextLoader;
+    private readonly IRichTextRenderer _richTextRenderer;
     private readonly string _orderNewestFirst;
 
     public BlogPostLoader(
         IAppSettingsService appSettingsService,
         IContentfulClient contentDeliveryClient,
-        IRichTextLoader richTextLoader
+        IRichTextRenderer richTextRenderer
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -34,7 +34,7 @@ public class BlogPostLoader : IBlogPostLoader
             .New(_ => _.PublishedAt, SortOrder.Reversed)
             .Build();
 
-        _richTextLoader = richTextLoader;
+        _richTextRenderer = richTextRenderer;
     }
 
     public async Task<BlogPostContent> GetBlogPost(string slug)
@@ -58,7 +58,7 @@ public class BlogPostLoader : IBlogPostLoader
             return null;
         }
 
-        blogPost.BodyString = _richTextLoader.BodyToHtml(blogPost);
+        blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
         return blogPost;
     }
 
@@ -83,7 +83,7 @@ public class BlogPostLoader : IBlogPostLoader
             return null;
         }
 
-        blogPost.BodyString = _richTextLoader.BodyToHtml(blogPost);
+        blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
         return blogPost;
     }
 

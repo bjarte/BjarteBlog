@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Contentful.Core;
 using Contentful.Core.Search;
 using Core.Features.AppSettings;
-using Core.Features.Editorial;
 using Core.Features.Page.Models;
+using Core.Features.Renderers;
 
 namespace Core.Features.Page;
 
@@ -33,12 +33,12 @@ public class PageLoader : IPageLoader
     //
     //private IContentfulManagementClient _contentManagementClient;
 
-    private readonly IRichTextLoader _richTextLoader;
+    private readonly IRichTextRenderer _richTextRenderer;
 
     public PageLoader(
         IAppSettingsService appSettingsService,
         IContentfulClient contentDeliveryClient,
-        IRichTextLoader richTextLoader
+        IRichTextRenderer richTextRenderer
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -48,7 +48,7 @@ public class PageLoader : IPageLoader
 
         _previewClient = new ContentfulClient(new HttpClient(), options);
 
-        _richTextLoader = richTextLoader;
+        _richTextRenderer = richTextRenderer;
     }
 
     public async Task<PageContent> GetPage(string slug)
@@ -75,7 +75,7 @@ public class PageLoader : IPageLoader
             return null;
         }
 
-        page.BodyString = _richTextLoader.BodyToHtml(page);
+        page.BodyString = _richTextRenderer.BodyToHtml(page);
         return page;
     }
 
@@ -100,7 +100,7 @@ public class PageLoader : IPageLoader
             return null;
         }
 
-        page.BodyString = _richTextLoader.BodyToHtml(page);
+        page.BodyString = _richTextRenderer.BodyToHtml(page);
         return page;
     }
 

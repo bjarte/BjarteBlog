@@ -1,6 +1,6 @@
 ﻿using Contentful.Core.Models;
 using Core.Features.Contentful;
-using Core.Features.Editorial;
+using Core.Features.Renderers;
 
 namespace Core.Features.Page.Models;
 

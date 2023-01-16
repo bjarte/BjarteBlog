@@ -3,8 +3,7 @@ using Contentful.AspNetCore;
 using Core.Features.AppSettings;
 using Core.Features.BlogPost;
 using Core.Features.Category;
-using Core.Features.CodeBlock;
-using Core.Features.Editorial;
+using Core.Features.Renderers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Routing;
@@ -22,7 +21,7 @@ builder.Services.AddSingleton<ICategoryOrchestrator, CategoryOrchestrator>();
 builder.Services.AddSingleton<INavigationLoader, NavigationLoader>();
 
 builder.Services.AddSingleton<ICodeBlockContentRenderer, CodeBlockContentRenderer>();
-builder.Services.AddSingleton<IRichTextLoader, RichTextLoader>();
+builder.Services.AddSingleton<IRichTextRenderer, RichTextRenderer>();
 
 // Add services to the container
 builder.Services.AddOutputCaching();

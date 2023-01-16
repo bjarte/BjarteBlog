@@ -1,6 +1,6 @@
 ﻿using Contentful.Core.Models;
 
-namespace Core.Features.CodeBlock;
+namespace Core.Features.Renderers;
 
 public interface ICodeBlockContentRenderer : IContentRenderer
 {

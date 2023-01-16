@@ -1,17 +1,15 @@
 ﻿using System.Linq;
 using Contentful.Core.Models;
-using Core.Features.CodeBlock;
 
-namespace Core.Features.Editorial;
+namespace Core.Features.Renderers;
 
-public class RichTextLoader : IRichTextLoader
+public class RichTextRenderer : IRichTextRenderer
 {
     private readonly ICodeBlockContentRenderer _codeBlockContentRenderer;
 
-    public RichTextLoader(ICodeBlockContentRenderer codeBlockContentRenderer)
+    public RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer)
     {
         _codeBlockContentRenderer = codeBlockContentRenderer;
-        _codeBlockContentRenderer.Order = 10;
     }
 
     public string BodyToHtml(IHasBody content)
@@ -22,6 +20,7 @@ public class RichTextLoader : IRichTextLoader
         }
 
         var htmlRenderer = new HtmlRenderer();
+        htmlRenderer.AddRenderer(new AdvancedTextRenderer());
         htmlRenderer.AddRenderer(_codeBlockContentRenderer);
 
         var html = htmlRenderer.ToHtml(content.Body).Result;
