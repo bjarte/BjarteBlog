@@ -27,7 +27,12 @@
                     <h2>@blogPost.Title</h2>
                 </a>
 
-                <p><time>@blogPost.PublishedAt?.ToString("D")</time></p>
+                @if (!string.IsNullOrEmpty(blogPost.Intro))
+                {
+                    <p>@blogPost.Intro</p>
+                }
+
+                <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
 
                 @if (blogPost.Categories?.Any() == true)
                 {
@@ -39,7 +44,6 @@
                     </p>
                 }
 
-                @blogPost.Intro
             </div>
 
         </div>

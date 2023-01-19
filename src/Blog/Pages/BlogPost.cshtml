@@ -23,15 +23,18 @@
                 </p>
             }
 
-            <p class="blogpost-intro">
-                @blogPost.Intro
+            <p>
+                Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time>
             </p>
 
+            @if (!string.IsNullOrEmpty(blogPost.Intro))
+            {
+                <p class="blogpost-intro">
+                    @blogPost.Intro
+                </p>
+            }
+
             @Html.Raw(blogPost.Body)
-            
-            <p>
-                Published: <time>@blogPost.PublishedAt?.ToString("f")</time>
-            </p>
 
             <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
 
