@@ -21,14 +21,23 @@ public partial class IndexModel : BasePageModel
 
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public IActionResult OnGet(bool disableCache = false, string year = null, string month = null, string slug = null)
+    public IActionResult OnGet(bool disableCache = false, string param1 = null, string param2 = null, string param3 = null, string param4 = null)
     {
         // Handle old blog urls on the format
-        // /2019/03/blog-post-slug
-        if (YearRegex().IsMatch(year ?? string.Empty)
-            && MonthRegex().IsMatch(month ?? string.Empty))
+        // /2020/12/31/blog-post-slug
+        if (FourDigitRegex().IsMatch(param1 ?? string.Empty)
+            && TwoDigitRegex().IsMatch(param2 ?? string.Empty)
+            && TwoDigitRegex().IsMatch(param3 ?? string.Empty))
         {
-            return RedirectToPagePermanent("BlogPost", new { id = slug });
+            return RedirectToPagePermanent("BlogPost", new { id = param4 });
+        }
+
+        // Handle old blog urls on the format
+        // /2020/12/blog-post-slug
+        if (FourDigitRegex().IsMatch(param1 ?? string.Empty)
+            && TwoDigitRegex().IsMatch(param2 ?? string.Empty))
+        {
+            return RedirectToPagePermanent("BlogPost", new { id = param3 });
         }
 
         if (!disableCache)
@@ -56,7 +65,7 @@ public partial class IndexModel : BasePageModel
     }
 
     [GeneratedRegex("^\\d\\d\\d\\d$")]
-    private static partial Regex YearRegex();
+    private static partial Regex FourDigitRegex();
     [GeneratedRegex("^\\d\\d$")]
-    private static partial Regex MonthRegex();
+    private static partial Regex TwoDigitRegex();
 }
