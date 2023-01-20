@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Contentful.Core.Models;
@@ -16,7 +17,8 @@ namespace Core.Features.Renderers
 
         public Task<string> RenderAsync(IContent content)
         {
-            if (content is not Text text)
+            if (content is not Text text
+                || string.IsNullOrEmpty(text.Value))
             {
                 return Task.FromResult(string.Empty);
 
@@ -33,7 +35,9 @@ namespace Core.Features.Renderers
                 html.Append($"<{MarkToHtmlTag(mark)}>");
             }
 
-            html.Append(text.Value);
+            var encodedText = WebUtility.HtmlEncode(text.Value);
+
+            html.Append(encodedText);
 
             foreach (var mark in text.Marks ?? new List<Mark>())
             {
