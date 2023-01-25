@@ -37,6 +37,14 @@
             @Html.Raw(blogPost.Body)
 
             <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
+            
+            <div id="cusdis_thread"
+                 data-host="https://cusdis.com"
+                 data-app-id="8408891b-fcd5-4eb0-956e-48ffe66ef173"
+                 data-page-id="@Model.Id"
+                 data-page-url="@($"https://basementmedia.no/blogpost/{Model.Id}")"
+                 data-page-title="@Model.Title"></div>
+            <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
             <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
 
