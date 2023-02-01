@@ -7,4 +7,6 @@ public interface IAppSettingsService
     ContentfulOptions GetContentfulOptions();
 
     string GetContentfulNavigation();
+
+    string GetCacheKey();
 }

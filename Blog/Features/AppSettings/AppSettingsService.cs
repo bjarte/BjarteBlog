@@ -7,7 +7,8 @@ namespace Blog.Features.AppSettings;
 
 public class AppSettingsService : IAppSettingsService
 {
-    private const string ContentfulOptions = "ContentfulOptions";
+    private const string ContentfulOptions = nameof(ContentfulOptions);
+    private const string OutputCacheSettings = nameof(OutputCacheSettings);
 
     private readonly IConfiguration _configuration;
     private readonly ILogger<AppSettingsService> _logger;
@@ -40,6 +41,11 @@ public class AppSettingsService : IAppSettingsService
     public string GetContentfulNavigation()
     {
         return GetContentfulOption("Navigation");
+    }
+
+    public string GetCacheKey()
+    {
+        return GetString($"{OutputCacheSettings}:CacheKey", true);
     }
 
     #region Helper methods
