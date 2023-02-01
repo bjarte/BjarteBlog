@@ -26,6 +26,7 @@ builder.Services.AddSingleton<IRichTextRenderer, RichTextRenderer>();
 
 // Add services to the container
 builder.Services.AddOutputCaching();
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddContentful(builder.Configuration);
@@ -57,6 +58,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.MapControllers();
+
 app.MapRazorPages();
 
 app.Run();
