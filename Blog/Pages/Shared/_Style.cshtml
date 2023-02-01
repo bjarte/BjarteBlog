@@ -1,0 +1,192 @@
+﻿<style>
+
+    /*
+
+            Colour palette:
+            https://coolors.co/4357ad-48a9a6-e4dfda-d4b483-c1666b
+
+            Dark
+            #283469 Space Cadet (blue)
+            #2A6260 Skobeloff (teal)
+
+            Light
+            #FCF6F0 Isabelline (grey)
+            #FFDFB1 Navajo White (brown)
+            #FFD4D6 Pale Pink (pink)
+
+            */
+
+    body {
+        background-color: #FCF6F0;
+        color: #283469;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 18px;
+    }
+
+        body img {
+            max-width: 100%;
+            min-width: 100%;
+            height: auto;
+        }
+
+    nav {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .container {
+        margin: 5em auto 0 auto;
+        width: 100%;
+        max-width: 1024px;
+    }
+
+    .content {
+        margin: 0 auto;
+        max-width: 768px;
+    }
+
+    @@media (max-width: 1024px) {
+        .container {
+            margin: 0;
+        }
+    }
+
+    footer {
+        margin: 5em auto 2em auto;
+        text-align: center;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: Georgia, Times New Roman, serif;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 1.75em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    a {
+        color: #2A6260;
+    }
+
+        a:hover {
+            filter: brightness(50%);
+        }
+
+    code {
+        font-family: monospace;
+        white-space: pre;
+        display: block;
+        unicode-bidi: embed
+    }
+
+    figure {
+        margin: 0;
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        nav ul li {
+            display: inline;
+            padding-right: 1em;
+        }
+
+    @@media(min-width: 600px) {
+        .blogpost-list-item {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            grid-column-gap: 2em;
+        }
+    }
+
+    .blogpost-list-item {
+        padding-bottom: 2em;
+    }
+
+        .blogpost-list-item h2 {
+            margin-top: 0;
+        }
+
+    .blogpost-categories {
+        padding: 1em 0;
+    }
+
+        .blogpost-categories a {
+            padding: 0.5em;
+            border: solid 1px;
+            border-radius: 10px;
+        }
+
+            .blogpost-categories a:hover {
+                background: #ffffff;
+            }
+
+    .blogpost-intro {
+        font-size: 1.25em;
+        margin-bottom: 1em;
+    }
+
+    .category-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 2em;
+        grid-row-gap: 2em;
+    }
+
+    @@media(min-width: 600px) {
+        .category-list {
+            grid-template-columns: repeat(5, 1fr)
+        }
+    }
+
+    .category-list a {
+        border: solid 3px;
+        border-radius: 25px;
+        text-decoration: none;
+    }
+
+        .category-list a:hover {
+            background: #ffffff;
+        }
+
+    .category-list-item {
+        text-align: center;
+        line-height: 3em;
+    }
+
+    @@media (prefers-color-scheme: dark) {
+        body {
+            background-color: #222222;
+            filter: invert(100%);
+        }
+            /* Syntax highlighter on <pre><code> elements is always dark */
+            body pre code {
+                filter: invert(100%);
+            }
+
+            body img {
+                filter: invert(100%);
+            }
+    }
+
+</style>

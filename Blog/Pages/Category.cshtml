@@ -1,0 +1,56 @@
+﻿@page "{id?}"
+@model CategoryModel
+
+<article>
+
+    @if (Model.Categories.Count() == 1)
+    {
+        var category = Model.Categories.First();
+
+        <h1>Category: @category.Title</h1>
+
+        @if (Model.BlogPosts?.Any() == true)
+        {
+            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+
+            <environment include="Development">
+                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+            </environment>
+        }
+        else
+        {
+            <p>Sorry, couldn't find any blog posts with category "@category.Title".</p>
+        }
+
+        <p><a asp-page="Category" asp-route-id="">All categories →</a></p>
+    }
+    else if (Model.Categories.Count() > 1)
+    {
+        <h1>Categories</h1>
+
+        <div class="category-list">
+
+            <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
+
+            <environment include="Development">
+                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
+                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
+                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
+                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
+            </environment>
+
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Model.Id))
+    {
+        <h1>Sorry, couldn't find and categories with id "@Model.Id"</h1>
+    }
+    else
+    {
+        <h1>Sorry, couldn't find any categories</h1>
+    }
+
+</article>
