@@ -3,7 +3,7 @@ trigger:
 - feature/*
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: '**/*.sln'
@@ -11,12 +11,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+
 - task: UseDotNet@2
-  displayName: 'Use .NET 7.x'
+  displayName: 'Install .NET 7 SDK'
   inputs:
     packageType: 'sdk'
     version: '7.x'
-    includePreviewVersions: true
+    includePreviewVersions: false
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
@@ -28,7 +29,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
   inputs:
-    projects: 'src/Blog/Blog.csproj'
+    projects: 'Blog/Blog.csproj'
     command: 'publish'
     arguments: '--configuration $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
     publishWebProjects: false
