@@ -7,5 +7,4 @@ public interface IPageLoader
 {
     Task<PageContent> GetPage(string slug);
     Task<PageContent> GetPagePreview(string id);
-    Task<IEnumerable<PageContent>> GetPages();
 }

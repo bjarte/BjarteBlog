@@ -3,6 +3,7 @@ using Blog.Features.AppSettings;
 using Blog.Features.BlogPost;
 using Blog.Features.Category;
 using Blog.Features.Navigation;
+using Blog.Features.Page;
 using Blog.Features.Renderers;
 using Contentful.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -20,6 +21,7 @@ builder.Services.AddSingleton<IBlogPostOrchestrator, BlogPostOrchestrator>();
 builder.Services.AddSingleton<ICategoryLoader, CategoryLoader>();
 builder.Services.AddSingleton<ICategoryOrchestrator, CategoryOrchestrator>();
 builder.Services.AddSingleton<INavigationLoader, NavigationLoader>();
+builder.Services.AddSingleton<IPageLoader, PageLoader>();
 
 builder.Services.AddSingleton<ICodeBlockContentRenderer, CodeBlockContentRenderer>();
 builder.Services.AddSingleton<IRichTextRenderer, RichTextRenderer>();

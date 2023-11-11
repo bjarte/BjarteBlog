@@ -101,14 +101,4 @@ public class PageLoader : IPageLoader
         page.BodyString = _richTextRenderer.BodyToHtml(page);
         return page;
     }
-
-    public async Task<IEnumerable<PageContent>> GetPages()
-    {
-        var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs("page")
-            .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true");
-
-        return await _contentDeliveryClient
-            .GetEntries(query);
-    }
 }
