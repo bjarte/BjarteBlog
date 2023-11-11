@@ -7,7 +7,7 @@
 
 <div class="blogpost-list">
 
-    @foreach (var blogPost in Model)
+    @foreach (var blogPost in Model.Take(3))
     {
         var blogPostUrl = Url.Page("BlogPost", new { id = blogPost.Slug });
         if (blogPost.Image != null)
@@ -45,6 +45,16 @@
 
             </div>
 
+        </div>
+    }
+
+    @foreach (var blogPost in Model.Skip(3))
+    {
+        <div>
+            <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
+                <h3>@blogPost.Title</h3>
+            </a>
+            <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
         </div>
     }
 
