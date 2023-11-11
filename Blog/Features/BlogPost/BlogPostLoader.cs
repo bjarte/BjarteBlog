@@ -10,6 +10,8 @@ namespace Blog.Features.BlogPost;
 
 public class BlogPostLoader : IBlogPostLoader
 {
+    private const string blogPostContentType = "blogpost";
+
     private readonly IContentfulClient _contentDeliveryClient;
     private readonly IContentfulClient _previewClient;
     private readonly IRichTextRenderer _richTextRenderer;
@@ -35,7 +37,7 @@ public class BlogPostLoader : IBlogPostLoader
         _richTextRenderer = richTextRenderer;
     }
 
-    public async Task<BlogPostContent> GetBlogPost(string slug)
+    public async Task<BlogPostContent> Get(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
         {
@@ -43,7 +45,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs("blogpost")
+            .ContentTypeIs(blogPostContentType)
             .FieldEquals(_ => _.Slug, slug)
             .Include(2);
 
@@ -60,7 +62,7 @@ public class BlogPostLoader : IBlogPostLoader
         return blogPost;
     }
 
-    public async Task<BlogPostContent> GetBlogPostPreview(string id)
+    public async Task<string> GetSlug(string id)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -68,7 +70,25 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs("blogpost")
+            .ContentTypeIs(blogPostContentType)
+            .FieldEquals(_ => _.Sys.Id, id)
+            .Include(1);
+
+        var pages = await _contentDeliveryClient
+            .GetEntries(query);
+
+        return pages.FirstOrDefault()?.Slug;
+    }
+
+    public async Task<BlogPostContent> GetPreview(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return null;
+        }
+
+        var query = new QueryBuilder<BlogPostContent>()
+            .ContentTypeIs(blogPostContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(2);
 
@@ -85,19 +105,24 @@ public class BlogPostLoader : IBlogPostLoader
         return blogPost;
     }
 
-    public async Task<IEnumerable<BlogPostContent>> GetBlogPosts()
+    public async Task<IEnumerable<BlogPostContent>> Get(int take = 0)
     {
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs("blogpost")
+            .ContentTypeIs(blogPostContentType)
             .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
             .Include(4)
             .OrderBy(_orderNewestFirst);
+
+        if (take > 0)
+        {
+            query = query.Limit(take);
+        }
 
         return await _contentDeliveryClient
              .GetEntries(query);
     }
 
-    public async Task<IEnumerable<BlogPostContent>> GetBlogPostsWithCategory(string categorySlug)
+    public async Task<IEnumerable<BlogPostContent>> GetWithCategory(string categorySlug)
     {
         if (string.IsNullOrEmpty(categorySlug))
         {
@@ -105,7 +130,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs("blogpost")
+            .ContentTypeIs(blogPostContentType)
             .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
             .OrderBy(_orderNewestFirst);
 

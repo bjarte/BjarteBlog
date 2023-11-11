@@ -11,6 +11,8 @@ namespace Blog.Features.Page;
 // ReSharper disable once UnusedMember.Global
 public class PageLoader : IPageLoader
 {
+    private const string pageContentType = "page";
+
     // The Content Delivery API (CDA) is a read-only API for
     // retrieving content from Contentful. All content, both JSON
     // and binary, is fetched from the server closest to a user's
@@ -49,7 +51,7 @@ public class PageLoader : IPageLoader
         _richTextRenderer = richTextRenderer;
     }
 
-    public async Task<PageContent> GetPage(string slug)
+    public async Task<PageContent> Get(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
         {
@@ -57,7 +59,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs("page")
+            .ContentTypeIs(pageContentType)
             .FieldEquals(_ => _.Slug, slug)
             // How many levels of references do we need? Default is 1,
             // the Page object itself. Set this to 2 to include the
@@ -77,7 +79,25 @@ public class PageLoader : IPageLoader
         return page;
     }
 
-    public async Task<PageContent> GetPagePreview(string id)
+    public async Task<string> GetSlug(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return null;
+        }
+
+        var query = new QueryBuilder<PageContent>()
+            .ContentTypeIs(pageContentType)
+            .FieldEquals(_ => _.Sys.Id, id)
+            .Include(1);
+
+        var pages = await _contentDeliveryClient
+            .GetEntries(query);
+
+        return pages.FirstOrDefault()?.Slug;
+    }
+
+    public async Task<PageContent> GetPreview(string id)
     {
         if (string.IsNullOrEmpty(id))
         {
@@ -85,7 +105,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs("page")
+            .ContentTypeIs(pageContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(2);
 

@@ -1,7 +1,6 @@
 ﻿using Blog.Features.BlogPost;
 using Blog.Features.BlogPost.Models;
 using Blog.Features.Navigation;
-using Blog.Features.Navigation.Models;
 using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
@@ -9,15 +8,15 @@ namespace Blog.Pages;
 public class BlogPostModel : BasePageModel
 {
     private readonly IBlogPostOrchestrator _blogPostOrchestrator;
-    private readonly INavigationLoader _navigationLoader;
+    private readonly INavigationOrchestrator _navigationOrchestrator;
 
     public BlogPostModel(
-        IBlogPostOrchestrator blogPostOrchestrator, 
-        INavigationLoader navigationLoader
+        IBlogPostOrchestrator blogPostOrchestrator,
+        INavigationOrchestrator navigationOrchestrator
     )
     {
         _blogPostOrchestrator = blogPostOrchestrator;
-        _navigationLoader = navigationLoader;
+        _navigationOrchestrator = navigationOrchestrator;
     }
 
     public string Id { get; set; }
@@ -34,14 +33,7 @@ public class BlogPostModel : BasePageModel
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        var navigationContent = _navigationLoader
-            .GetNavigation()
-            .Result;
-
-        if (navigationContent != null)
-        {
-            Navigation = new NavigationViewModel(navigationContent);
-        }
+        Navigation = _navigationOrchestrator.Get();
 
         BlogPosts = _blogPostOrchestrator.GetBlogPosts(id, preview, out var title);
         Title = title;

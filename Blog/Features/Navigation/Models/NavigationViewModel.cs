@@ -2,23 +2,17 @@
 {
     public class NavigationViewModel
     {
-        public NavigationViewModel(NavigationContent content)
+        public NavigationViewModel(List<LinkViewModel> links)
         {
-            if (content == null)
+            if (links == null)
             {
-                Title = "Mangler tittel";
                 Links = new List<LinkViewModel>();
                 return;
             }
 
-            Title = content.Title;
-            Links = content
-                .Links
-                .Select(_ => new LinkViewModel(_))
-                .ToList();
+            Links = links;
         }
 
-        public string Title { get; set; }
         public List<LinkViewModel> Links { get; set; }
     }
 }

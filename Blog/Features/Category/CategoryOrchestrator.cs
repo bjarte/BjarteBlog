@@ -25,13 +25,13 @@ namespace Blog.Features.Category
                 title = "Categories";
 
                 return _categoryLoader
-                    .GetCategories()
+                    .Get()
                     .Result
                     .Select(_ => new CategoryViewModel(_));
             }
 
             var categoryContent = _categoryLoader
-                .GetCategory(id)
+                .Get(id)
                 .Result;
 
             title = $"Category: {categoryContent?.Title ?? id}";
@@ -44,7 +44,7 @@ namespace Blog.Features.Category
         public IEnumerable<BlogPostViewModel> GetBlogPosts(string categoryId)
         {
             var blogPostContents = _blogPostLoader
-                                       .GetBlogPostsWithCategory(categoryId)
+                                       .GetWithCategory(categoryId)
                                        .Result;
 
             return blogPostContents == null

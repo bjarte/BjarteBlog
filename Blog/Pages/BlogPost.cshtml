@@ -37,7 +37,7 @@
             @Html.Raw(blogPost.Body)
 
             <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
-            
+
             <div id="cusdis_thread"
                  data-host="https://cusdis.com"
                  data-app-id="8408891b-fcd5-4eb0-956e-48ffe66ef173"
@@ -56,13 +56,6 @@
         <h1>Blog posts</h1>
 
         <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-
-        <environment include="Development">
-            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-        </environment>
     }
     else if (!string.IsNullOrEmpty(Model.Id))
     {

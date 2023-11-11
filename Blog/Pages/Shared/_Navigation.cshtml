@@ -12,6 +12,10 @@
                 {
                     <a href="@link.Url">@link.Title</a>
                 }
+                else if (!string.IsNullOrEmpty(link.Path))
+                {
+                    <a href="@link.Path">@link.Title</a>
+                }
                 else
                 {
                     @link.Title

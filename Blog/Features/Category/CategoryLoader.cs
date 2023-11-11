@@ -19,7 +19,7 @@ public class CategoryLoader : ICategoryLoader
             .Build();
     }
 
-    public async Task<CategoryContent> GetCategory(string slug)
+    public async Task<CategoryContent> Get(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
         {
@@ -36,7 +36,7 @@ public class CategoryLoader : ICategoryLoader
         return entries.FirstOrDefault();
     }
 
-    public async Task<IEnumerable<CategoryContent>> GetCategories()
+    public async Task<IEnumerable<CategoryContent>> Get()
     {
         var query = new QueryBuilder<CategoryContent>()
             .ContentTypeIs("category")

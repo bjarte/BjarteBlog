@@ -5,6 +5,6 @@ namespace Blog.Features.Category;
 
 public interface ICategoryLoader
 {
-    Task<CategoryContent> GetCategory(string slug);
-    Task<IEnumerable<CategoryContent>> GetCategories();
+    Task<CategoryContent> Get(string slug);
+    Task<IEnumerable<CategoryContent>> Get();
 }

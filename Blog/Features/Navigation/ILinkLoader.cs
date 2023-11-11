@@ -3,7 +3,7 @@ using Blog.Features.Navigation.Models;
 
 namespace Blog.Features.Navigation;
 
-public interface INavigationLoader
+public interface ILinkLoader
 {
-    Task<NavigationContent> GetNavigation();
+    Task<IEnumerable<LinkContent>> Get();
 }

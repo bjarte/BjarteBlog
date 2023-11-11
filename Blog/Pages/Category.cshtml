@@ -12,13 +12,6 @@
         @if (Model.BlogPosts?.Any() == true)
         {
             <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-
-            <environment include="Development">
-                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-                <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
-            </environment>
         }
         else
         {
@@ -34,13 +27,6 @@
         <div class="category-list">
 
             <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-
-            <environment include="Development">
-                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-                <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-            </environment>
 
         </div>
     }

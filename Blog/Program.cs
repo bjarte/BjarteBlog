@@ -20,7 +20,8 @@ builder.Services.AddSingleton<IBlogPostLoader, BlogPostLoader>();
 builder.Services.AddSingleton<IBlogPostOrchestrator, BlogPostOrchestrator>();
 builder.Services.AddSingleton<ICategoryLoader, CategoryLoader>();
 builder.Services.AddSingleton<ICategoryOrchestrator, CategoryOrchestrator>();
-builder.Services.AddSingleton<INavigationLoader, NavigationLoader>();
+builder.Services.AddSingleton<ILinkLoader, LinkLoader>();
+builder.Services.AddSingleton<INavigationOrchestrator, NavigationOrchestrator>();
 builder.Services.AddSingleton<IPageLoader, PageLoader>();
 
 builder.Services.AddSingleton<ICodeBlockContentRenderer, CodeBlockContentRenderer>();

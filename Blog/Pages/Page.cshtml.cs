@@ -1,5 +1,4 @@
 ﻿using Blog.Features.Navigation;
-using Blog.Features.Navigation.Models;
 using Blog.Features.Page;
 using Blog.Features.Page.Models;
 using WebEssentials.AspNetCore.OutputCaching;
@@ -9,15 +8,15 @@ namespace Blog.Pages;
 public class PageModel : BasePageModel
 {
     private readonly IPageLoader _pageLoader;
-    private readonly INavigationLoader _navigationLoader;
+    private readonly INavigationOrchestrator _navigationOrchestrator;
 
     public PageModel(
         IPageLoader pageLoader,
-        INavigationLoader navigationLoader
+        INavigationOrchestrator navigationOrchestrator
     )
     {
         _pageLoader = pageLoader;
-        _navigationLoader = navigationLoader;
+        _navigationOrchestrator = navigationOrchestrator;
     }
 
     public string Id { get; set; }
@@ -34,21 +33,14 @@ public class PageModel : BasePageModel
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        var navigationContent = _navigationLoader
-            .GetNavigation()
-            .Result;
-
-        if (navigationContent != null)
-        {
-            Navigation = new NavigationViewModel(navigationContent);
-        }
+        Navigation = _navigationOrchestrator.Get();
 
         var pageContent = preview
             ? _pageLoader
-                .GetPagePreview(id)
+                .GetPreview(id)
                 .Result
             : _pageLoader
-                .GetPage(id)
+                .Get(id)
                 .Result;
 
         if (pageContent != null)

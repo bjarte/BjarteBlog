@@ -14,7 +14,7 @@ public class CodeBlockLoader : ICodeBlockLoader
         _contentDeliveryClient = contentDeliveryClient;
     }
 
-    public async Task<CodeBlockContent> GetCodeBlock(string slug)
+    public async Task<CodeBlockContent> Get(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
         {

@@ -2,7 +2,6 @@ using System.Text.RegularExpressions;
 using Blog.Features.BlogPost;
 using Blog.Features.BlogPost.Models;
 using Blog.Features.Navigation;
-using Blog.Features.Navigation.Models;
 using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
@@ -10,15 +9,15 @@ namespace Blog.Pages;
 public partial class IndexModel : BasePageModel
 {
     private readonly IBlogPostLoader _blogPostLoader;
-    private readonly INavigationLoader _navigationLoader;
+    private readonly INavigationOrchestrator _navigationOrchestrator;
 
     public IndexModel(
         IBlogPostLoader blogPostLoader,
-        INavigationLoader navigationLoader
+        INavigationOrchestrator navigationOrchestrator
     )
     {
         _blogPostLoader = blogPostLoader;
-        _navigationLoader = navigationLoader;
+        _navigationOrchestrator = navigationOrchestrator;
     }
 
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
@@ -49,17 +48,10 @@ public partial class IndexModel : BasePageModel
                 varyByParam: nameof(disableCache));
         }
 
-        var navigationContent = _navigationLoader
-            .GetNavigation()
-            .Result;
-
-        if (navigationContent != null)
-        {
-            Navigation = new NavigationViewModel(navigationContent);
-        }
+        Navigation = _navigationOrchestrator.Get();
 
         BlogPosts = _blogPostLoader
-            .GetBlogPosts()
+            .Get(10)
             .Result
             .Select(_ => new BlogPostViewModel(_));
 

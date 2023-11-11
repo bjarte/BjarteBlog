@@ -5,6 +5,7 @@ namespace Blog.Features.Page;
 
 public interface IPageLoader
 {
-    Task<PageContent> GetPage(string slug);
-    Task<PageContent> GetPagePreview(string id);
+    Task<PageContent> Get(string slug);
+    Task<string> GetSlug(string id);
+    Task<PageContent> GetPreview(string id);
 }

@@ -18,17 +18,17 @@ namespace Blog.Features.BlogPost
                 title = "Blog posts";
 
                 return _blogPostLoader
-                    .GetBlogPosts()
+                    .Get(0)
                     .Result
                     .Select(_ => new BlogPostViewModel(_));
             }
 
             var blogPostContent = preview
                 ? _blogPostLoader
-                    .GetBlogPostPreview(id)
+                    .GetPreview(id)
                     .Result
                 : _blogPostLoader
-                    .GetBlogPost(id)
+                    .Get(id)
                     .Result;
 
             title = blogPostContent?.Title ?? id;
