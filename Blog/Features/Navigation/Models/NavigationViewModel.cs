@@ -1,18 +1,17 @@
-﻿namespace Blog.Features.Navigation.Models
-{
-    public class NavigationViewModel
-    {
-        public NavigationViewModel(List<LinkViewModel> links)
-        {
-            if (links == null)
-            {
-                Links = new List<LinkViewModel>();
-                return;
-            }
+﻿namespace Blog.Features.Navigation.Models;
 
-            Links = links;
+public class NavigationViewModel
+{
+    public NavigationViewModel(List<LinkViewModel> links)
+    {
+        if (links == null)
+        {
+            Links = new List<LinkViewModel>();
+            return;
         }
 
-        public List<LinkViewModel> Links { get; set; }
+        Links = links;
     }
+
+    public List<LinkViewModel> Links { get; set; }
 }

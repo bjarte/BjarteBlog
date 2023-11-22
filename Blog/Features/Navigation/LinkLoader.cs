@@ -6,23 +6,14 @@ using Contentful.Core.Search;
 
 namespace Blog.Features.Navigation;
 
-public class LinkLoader : ILinkLoader
-{
-    private readonly IAppSettingsService _appSettingsService;
-    private readonly IContentfulClient _contentDeliveryClient;
-
-    public LinkLoader(
+public class LinkLoader(
         IAppSettingsService appSettingsService,
         IContentfulClient contentDeliveryClient
-    )
-    {
-        _appSettingsService = appSettingsService;
-        _contentDeliveryClient = contentDeliveryClient;
-    }
-
+    ) : ILinkLoader
+{
     public async Task<IEnumerable<LinkContent>> Get()
     {
-        var navigationSlug = _appSettingsService.GetContentfulNavigation();
+        var navigationSlug = appSettingsService.GetContentfulNavigation();
 
         if (string.IsNullOrWhiteSpace(navigationSlug))
         {
@@ -34,7 +25,7 @@ public class LinkLoader : ILinkLoader
             .FieldEquals(_ => _.Slug, navigationSlug)
             .Include(2);
 
-        var navigations = await _contentDeliveryClient
+        var navigations = await contentDeliveryClient
             .GetEntries(query);
 
         return navigations.FirstOrDefault()?.Links;

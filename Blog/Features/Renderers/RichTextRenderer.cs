@@ -2,15 +2,8 @@
 
 namespace Blog.Features.Renderers;
 
-public class RichTextRenderer : IRichTextRenderer
+public class RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer) : IRichTextRenderer
 {
-    private readonly ICodeBlockContentRenderer _codeBlockContentRenderer;
-
-    public RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer)
-    {
-        _codeBlockContentRenderer = codeBlockContentRenderer;
-    }
-
     public string BodyToHtml(IHasBody content)
     {
         if (content?.Body?.Content?.Any() != true)
@@ -20,7 +13,7 @@ public class RichTextRenderer : IRichTextRenderer
 
         var htmlRenderer = new HtmlRenderer();
         htmlRenderer.AddRenderer(new AdvancedTextRenderer());
-        htmlRenderer.AddRenderer(_codeBlockContentRenderer);
+        htmlRenderer.AddRenderer(codeBlockContentRenderer);
 
         var html = htmlRenderer.ToHtml(content.Body).Result;
 

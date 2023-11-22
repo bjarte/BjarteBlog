@@ -2,40 +2,24 @@ using Contentful.Core.Models;
 
 namespace Blog.Features.Image;
 
-public class ImageViewModel
+public class ImageViewModel(Asset image, bool showCaption = false)
 {
     // File properties
-    public string Url { get; set; }
-    public string FileName { get; set; }
-    public long Size { get; set; }
+    public string Url { get; set; } = image.File.Url;
+    public string FileName { get; set; } = image.File.FileName;
+    public long Size { get; set; } = image.File.Details.Size;
 
     // Image properties
-    public string AltText { get; set; }
-    public string Caption { get; set; }
-    public int Width { get; set; }
-    public int Height { get; set; }
-    public int OriginalWidth { get; set; }
-    public int OriginalHeight { get; set; }
+    public string AltText { get; set; } = image.Title;
+    public string Caption { get; set; } = image.Description;
+    public int Width { get; set; } = image.File.Details.Image.Width;
+    public int Height { get; set; } = image.File.Details.Image.Height;
+    public int OriginalWidth { get; set; } = image.File.Details.Image.Width;
+    public int OriginalHeight { get; set; } = image.File.Details.Image.Height;
 
     // Link
     public string LinkUrl { get; set; }
 
     // View settings
-    public bool ShowCaption { get; set; }
-
-    public ImageViewModel(Asset image, bool showCaption = false)
-    {
-        Url = image.File.Url;
-        FileName = image.File.FileName;
-        Size = image.File.Details.Size;
-
-        AltText = image.Title;
-        Caption = image.Description;
-        Width = image.File.Details.Image.Width;
-        Height = image.File.Details.Image.Height;
-        OriginalWidth = image.File.Details.Image.Width;
-        OriginalHeight = image.File.Details.Image.Height;
-
-        ShowCaption = showCaption;
-    }
+    public bool ShowCaption { get; set; } = showCaption;
 }

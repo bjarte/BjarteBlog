@@ -2,61 +2,49 @@
 using Blog.Features.Navigation.Models;
 using Blog.Features.Page;
 
-namespace Blog.Features.Navigation
+namespace Blog.Features.Navigation;
+
+public class NavigationOrchestrator(
+        IBlogPostLoader blogPostLoader,
+        ILinkLoader linkLoader,
+        IPageLoader pageLoader
+    ) : INavigationOrchestrator
 {
-    public class NavigationOrchestrator : INavigationOrchestrator
+    public NavigationViewModel Get()
     {
-        private readonly IBlogPostLoader _blogPostLoader;
-        private readonly ILinkLoader _linkLoader;
-        private readonly IPageLoader _pageLoader;
+        var links = linkLoader
+            .Get()?
+            .Result;
 
-        public NavigationOrchestrator(
-            IBlogPostLoader blogPostLoader,
-            ILinkLoader linkLoader,
-            IPageLoader pageLoader
-        )
+        var linkList = new List<LinkViewModel>();
+
+        foreach (var link in links ?? Enumerable.Empty<LinkContent>())
         {
-            _blogPostLoader = blogPostLoader;
-            _linkLoader = linkLoader;
-            _pageLoader = pageLoader;
-        }
+            var linkViewModel = new LinkViewModel(link);
 
-        public NavigationViewModel Get()
-        {
-            var links = _linkLoader
-                .Get()?
-                .Result;
-
-            var linkList = new List<LinkViewModel>();
-
-            foreach (var link in links ?? Enumerable.Empty<LinkContent>())
+            var linkedContentId = link?.InternalLink?.Sys?.Id;
+            if (!string.IsNullOrEmpty(linkedContentId))
             {
-                var linkViewModel = new LinkViewModel(link);
-
-                var linkedContentId = link?.InternalLink?.Sys?.Id;
-                if (!string.IsNullOrEmpty(linkedContentId))
+                var pageSlug = pageLoader
+                    .GetSlug(linkedContentId)?
+                    .Result;
+                if (!string.IsNullOrEmpty(pageSlug))
                 {
-                    var pageSlug = _pageLoader
-                        .GetSlug(linkedContentId)?
-                        .Result;
-                    if (!string.IsNullOrEmpty(pageSlug))
-                    {
-                        linkViewModel.Path = "/page/" + pageSlug;
-                    }
-
-                    var blogSlug = _blogPostLoader
-                        .GetSlug(linkedContentId)?
-                        .Result;
-                    if (!string.IsNullOrEmpty(blogSlug))
-                    {
-                        linkViewModel.Path = "/blogpost/" + blogSlug;
-                    }
+                    linkViewModel.Path = "/page/" + pageSlug;
                 }
 
-                linkList.Add(linkViewModel);
+                var blogSlug = blogPostLoader
+                    .GetSlug(linkedContentId)?
+                    .Result;
+                if (!string.IsNullOrEmpty(blogSlug))
+                {
+                    linkViewModel.Path = "/blogpost/" + blogSlug;
+                }
             }
 
-            return new NavigationViewModel(linkList);
+            linkList.Add(linkViewModel);
         }
+
+        return new NavigationViewModel(linkList);
     }
 }

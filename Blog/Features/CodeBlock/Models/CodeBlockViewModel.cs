@@ -1,17 +1,9 @@
 ﻿namespace Blog.Features.CodeBlock.Models;
 
-public class CodeBlockViewModel
+public class CodeBlockViewModel(CodeBlockContent content)
 {
-    public CodeBlockViewModel(CodeBlockContent content)
-    {
-        Title = content.Title;
-        Slug = content.Slug;
-        Language = content.Language ?? string.Empty;
-        Code = content.CodeString ?? string.Empty;
-    }
-
-    public string Title { get; set; }
-    public string Slug { get; set; }
-    public string Language { get; set; }
-    public string Code { get; set; }
+    public string Title { get; set; } = content.Title;
+    public string Slug { get; set; } = content.Slug;
+    public string Language { get; set; } = content.Language ?? string.Empty;
+    public string Code { get; set; } = content.CodeString ?? string.Empty;
 }

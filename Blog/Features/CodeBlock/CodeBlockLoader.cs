@@ -5,15 +5,8 @@ using Contentful.Core.Search;
 
 namespace Blog.Features.CodeBlock;
 
-public class CodeBlockLoader : ICodeBlockLoader
+public class CodeBlockLoader(IContentfulClient contentDeliveryClient) : ICodeBlockLoader
 {
-    private readonly IContentfulClient _contentDeliveryClient;
-
-    public CodeBlockLoader(IContentfulClient contentDeliveryClient)
-    {
-        _contentDeliveryClient = contentDeliveryClient;
-    }
-
     public async Task<CodeBlockContent> Get(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
@@ -25,7 +18,7 @@ public class CodeBlockLoader : ICodeBlockLoader
             .ContentTypeIs("codeBlock")
             .FieldEquals(_ => _.Slug, slug);
 
-        var entries = await _contentDeliveryClient
+        var entries = await contentDeliveryClient
             .GetEntries(query);
 
         return entries.FirstOrDefault();

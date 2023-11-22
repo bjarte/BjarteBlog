@@ -1,41 +1,33 @@
 ﻿using Blog.Features.BlogPost.Models;
 
-namespace Blog.Features.BlogPost
+namespace Blog.Features.BlogPost;
+
+public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader) : IBlogPostOrchestrator
 {
-    public class BlogPostOrchestrator : IBlogPostOrchestrator
+    public IEnumerable<BlogPostViewModel> GetBlogPosts(string id, bool preview, out string title)
     {
-        private readonly IBlogPostLoader _blogPostLoader;
-
-        public BlogPostOrchestrator(IBlogPostLoader blogPostLoader)
+        if (string.IsNullOrEmpty(id))
         {
-            _blogPostLoader = blogPostLoader;
+            title = "Blog posts";
+
+            return blogPostLoader
+                .Get(0)
+                .Result
+                .Select(_ => new BlogPostViewModel(_));
         }
 
-        public IEnumerable<BlogPostViewModel> GetBlogPosts(string id, bool preview, out string title)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                title = "Blog posts";
+        var blogPostContent = preview
+            ? blogPostLoader
+                .GetPreview(id)
+                .Result
+            : blogPostLoader
+                .Get(id)
+                .Result;
 
-                return _blogPostLoader
-                    .Get(0)
-                    .Result
-                    .Select(_ => new BlogPostViewModel(_));
-            }
+        title = blogPostContent?.Title ?? id;
 
-            var blogPostContent = preview
-                ? _blogPostLoader
-                    .GetPreview(id)
-                    .Result
-                : _blogPostLoader
-                    .Get(id)
-                    .Result;
-
-            title = blogPostContent?.Title ?? id;
-
-            return blogPostContent == null
-                ? Enumerable.Empty<BlogPostViewModel>()
-                : new BlogPostViewModel[] { new(blogPostContent, true) };
-        }
+        return blogPostContent == null
+            ? Enumerable.Empty<BlogPostViewModel>()
+            : new BlogPostViewModel[] { new(blogPostContent, true) };
     }
 }

@@ -5,22 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Blog.Features.AppSettings;
 
-public class AppSettingsService : IAppSettingsService
+public class AppSettingsService(
+        IConfiguration configuration,
+        ILogger logger
+    ) : IAppSettingsService
 {
     private const string ContentfulOptions = nameof(ContentfulOptions);
     private const string OutputCacheSettings = nameof(OutputCacheSettings);
-
-    private readonly IConfiguration _configuration;
-    private readonly ILogger<AppSettingsService> _logger;
-
-    public AppSettingsService(
-        IConfiguration configuration,
-        ILogger<AppSettingsService> logger
-    )
-    {
-        _configuration = configuration;
-        _logger = logger;
-    }
 
     public ContentfulOptions GetContentfulOptions()
     {
@@ -62,14 +53,14 @@ public class AppSettingsService : IAppSettingsService
 
     private string GetString(string appSettingKey, bool required = false, string defaultValue = "")
     {
-        var setting = _configuration[appSettingKey];
+        var setting = configuration[appSettingKey];
 
         if (!string.IsNullOrWhiteSpace(setting))
         {
             return setting;
         }
 
-        _logger.LogError($"AppSetting '{appSettingKey}' is undefined");
+        logger.LogError($"AppSetting '{appSettingKey}' is undefined");
 
         if (required)
         {

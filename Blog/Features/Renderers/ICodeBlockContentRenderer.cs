@@ -2,6 +2,4 @@
 
 namespace Blog.Features.Renderers;
 
-public interface ICodeBlockContentRenderer : IContentRenderer
-{
-}
+public interface ICodeBlockContentRenderer : IContentRenderer;

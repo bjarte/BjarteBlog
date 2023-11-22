@@ -3,63 +3,62 @@ using System.Text;
 using System.Threading.Tasks;
 using Contentful.Core.Models;
 
-namespace Blog.Features.Renderers
+namespace Blog.Features.Renderers;
+
+public class AdvancedTextRenderer : IContentRenderer
 {
-    public class AdvancedTextRenderer : IContentRenderer
+    public int Order { get; set; } = 10;
+
+    public bool SupportsContent(IContent content)
     {
-        public int Order { get; set; } = 10;
+        return content is Text;
+    }
 
-        public bool SupportsContent(IContent content)
+    public Task<string> RenderAsync(IContent content)
+    {
+        if (content is not Text text
+            || string.IsNullOrEmpty(text.Value))
         {
-            return content is Text;
+            return Task.FromResult(string.Empty);
+
         }
 
-        public Task<string> RenderAsync(IContent content)
+        var html = new StringBuilder();
+
+        foreach (var mark in text.Marks ?? new List<Mark>())
         {
-            if (content is not Text text
-                || string.IsNullOrEmpty(text.Value))
+            if (mark.Type.Equals("code"))
             {
-                return Task.FromResult(string.Empty);
-
+                html.Append("<pre>");
             }
-
-            var html = new StringBuilder();
-
-            foreach (var mark in text.Marks ?? new List<Mark>())
-            {
-                if (mark.Type.Equals("code"))
-                {
-                    html.Append("<pre>");
-                }
-                html.Append($"<{MarkToHtmlTag(mark)}>");
-            }
-
-            var encodedText = WebUtility.HtmlEncode(text.Value);
-
-            html.Append(encodedText);
-
-            foreach (var mark in text.Marks ?? new List<Mark>())
-            {
-                html.Append($"</{MarkToHtmlTag(mark)}>");
-                if (mark.Type.Equals("code"))
-                {
-                    html.Append("</pre>");
-                }
-            }
-
-            return Task.FromResult(html.ToString());
+            html.Append($"<{MarkToHtmlTag(mark)}>");
         }
 
-        private static string MarkToHtmlTag(Mark mark)
+        var encodedText = WebUtility.HtmlEncode(text.Value);
+
+        html.Append(encodedText);
+
+        foreach (var mark in text.Marks ?? new List<Mark>())
         {
-            return mark.Type switch
+            html.Append($"</{MarkToHtmlTag(mark)}>");
+            if (mark.Type.Equals("code"))
             {
-                "bold" => "strong",
-                "underline" => "u",
-                "italic" => "em",
-                "code" => "code",
-                _ => "span"
-            };
+                html.Append("</pre>");
+            }
         }
+
+        return Task.FromResult(html.ToString());
+    }
+
+    private static string MarkToHtmlTag(Mark mark)
+    {
+        return mark.Type switch
+        {
+            "bold" => "strong",
+            "underline" => "u",
+            "italic" => "em",
+            "code" => "code",
+            _ => "span"
+        };
     }
 }

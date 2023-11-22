@@ -5,20 +5,11 @@ namespace Blog.Features.Caching;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ClearCacheController : Controller
-{
-    private readonly IAppSettingsService _appSettingsService;
-    private readonly IOutputCachingService _outputCachingService;
-
-    public ClearCacheController(
+public class ClearCacheController(
         IAppSettingsService appSettingsService,
         IOutputCachingService outputCachingService
-    )
-    {
-        _appSettingsService = appSettingsService;
-        _outputCachingService = outputCachingService;
-    }
-
+    ) : Controller
+{
     [HttpGet("{secret}")]
     public IActionResult Index(string secret)
     {
@@ -28,12 +19,12 @@ public class ClearCacheController : Controller
             return new BadRequestResult();
         }
 
-        if (secret != _appSettingsService.GetCacheKey())
+        if (secret != appSettingsService.GetCacheKey())
         {
             return new BadRequestResult();
         }
 
-        _outputCachingService.Clear();
+        outputCachingService.Clear();
 
         return new JsonResult("Cache cleared");
     }
