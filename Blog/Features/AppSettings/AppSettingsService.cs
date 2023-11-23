@@ -7,7 +7,7 @@ namespace Blog.Features.AppSettings;
 
 public class AppSettingsService(
         IConfiguration configuration,
-        ILogger logger
+        ILogger<AppSettingsService> logger
     ) : IAppSettingsService
 {
     private const string ContentfulOptions = nameof(ContentfulOptions);

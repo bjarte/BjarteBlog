@@ -1,11 +1,16 @@
-﻿<environment include="Development">
+﻿
+
+
+
+<environment include="Development">
     <p>Environment: Development</p>
+    <p>Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
 </environment>
 <environment include="Staging">
     <p>Environment: Staging</p>
+    <p>Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
 </environment>
 <environment include="Production">
     <!-- Environment: Production -->
+    <!-- Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") -->
 </environment>
-
-<!-- When was this page cached? @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") -->
