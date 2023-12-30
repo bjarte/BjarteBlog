@@ -39,6 +39,16 @@ public class AppSettingsService(
         return GetString($"{OutputCacheSettings}:CacheKey", true);
     }
 
+    public bool IsDevelopment()
+    {
+        return GetEnvironmentVariable() == "Development";
+    }
+
+    public bool IsProduction()
+    {
+        return GetEnvironmentVariable() == "Production";
+    }
+
     #region Helper methods
 
     private string GetContentfulOption(string name)
@@ -68,6 +78,11 @@ public class AppSettingsService(
         }
 
         return defaultValue;
+    }
+
+    private static string GetEnvironmentVariable()
+    {
+        return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     }
 
     #endregion Helper methods

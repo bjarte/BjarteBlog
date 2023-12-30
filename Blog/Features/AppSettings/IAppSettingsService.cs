@@ -9,4 +9,7 @@ public interface IAppSettingsService
     string GetContentfulNavigation();
 
     string GetCacheKey();
+
+    bool IsDevelopment();
+    bool IsProduction();
 }

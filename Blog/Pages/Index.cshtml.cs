@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions; 
+using System.Text.RegularExpressions;
 using Blog.Features.BlogPost;
 using Blog.Features.BlogPost.Models;
 using Blog.Features.Navigation;
@@ -8,8 +8,8 @@ namespace Blog.Pages;
 
 public partial class IndexModel(
     IBlogPostLoader blogPostLoader,
-    INavigationOrchestrator navigationOrchestrator)
-    : BasePageModel
+    INavigationOrchestrator navigationOrchestrator
+) : BasePageModel
 {
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
@@ -21,7 +21,10 @@ public partial class IndexModel(
             && TwoDigitRegex().IsMatch(param2 ?? string.Empty)
             && TwoDigitRegex().IsMatch(param3 ?? string.Empty))
         {
-            return RedirectToPagePermanent("BlogPost", new { id = param4 });
+            return RedirectToPagePermanent("BlogPost", new
+            {
+                id = param4
+            });
         }
 
         // Handle old blog urls on the format
@@ -29,7 +32,10 @@ public partial class IndexModel(
         if (FourDigitRegex().IsMatch(param1 ?? string.Empty)
             && TwoDigitRegex().IsMatch(param2 ?? string.Empty))
         {
-            return RedirectToPagePermanent("BlogPost", new { id = param3 });
+            return RedirectToPagePermanent("BlogPost", new
+            {
+                id = param3
+            });
         }
 
         if (!disableCache)
