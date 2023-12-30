@@ -48,7 +48,7 @@
         </div>
     }
 
-    @foreach (var blogPost in Model.Skip(3))
+    @foreach (var blogPost in Model.Skip(3).Take(3))
     {
         <div>
             <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">

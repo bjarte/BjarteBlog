@@ -1,16 +1,16 @@
-﻿
-
-
+﻿@{
+    var utcNow = DateTime.UtcNow;
+}
 
 <environment include="Development">
     <p>Environment: Development</p>
-    <p>Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    <p>Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
 </environment>
 <environment include="Staging">
     <p>Environment: Staging</p>
-    <p>Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    <p>Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
 </environment>
 <environment include="Production">
     <!-- Environment: Production -->
-    <!-- Page cached: @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") -->
+    <!-- Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC -->
 </environment>

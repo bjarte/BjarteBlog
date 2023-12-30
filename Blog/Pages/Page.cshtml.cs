@@ -5,20 +5,11 @@ using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public class PageModel : BasePageModel
+public class PageModel(
+    IPageLoader pageLoader,
+    INavigationOrchestrator navigationOrchestrator)
+    : BasePageModel
 {
-    private readonly IPageLoader _pageLoader;
-    private readonly INavigationOrchestrator _navigationOrchestrator;
-
-    public PageModel(
-        IPageLoader pageLoader,
-        INavigationOrchestrator navigationOrchestrator
-    )
-    {
-        _pageLoader = pageLoader;
-        _navigationOrchestrator = navigationOrchestrator;
-    }
-
     public string Id { get; set; }
     public PageViewModel CurrentPage { get; set; }
 
@@ -33,13 +24,13 @@ public class PageModel : BasePageModel
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        Navigation = _navigationOrchestrator.Get();
+        Navigation = navigationOrchestrator.Get();
 
         var pageContent = preview
-            ? _pageLoader
+            ? pageLoader
                 .GetPreview(id)
                 .Result
-            : _pageLoader
+            : pageLoader
                 .Get(id)
                 .Result;
 

@@ -5,20 +5,11 @@ using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public class BlogPostModel : BasePageModel
+public class BlogPostModel(
+    IBlogPostOrchestrator blogPostOrchestrator,
+    INavigationOrchestrator navigationOrchestrator)
+    : BasePageModel
 {
-    private readonly IBlogPostOrchestrator _blogPostOrchestrator;
-    private readonly INavigationOrchestrator _navigationOrchestrator;
-
-    public BlogPostModel(
-        IBlogPostOrchestrator blogPostOrchestrator,
-        INavigationOrchestrator navigationOrchestrator
-    )
-    {
-        _blogPostOrchestrator = blogPostOrchestrator;
-        _navigationOrchestrator = navigationOrchestrator;
-    }
-
     public string Id { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
@@ -33,9 +24,9 @@ public class BlogPostModel : BasePageModel
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        Navigation = _navigationOrchestrator.Get();
+        Navigation = navigationOrchestrator.Get();
 
-        BlogPosts = _blogPostOrchestrator.GetBlogPosts(id, preview, out var title);
+        BlogPosts = blogPostOrchestrator.GetBlogPosts(id, preview, out var title);
         Title = title;
 
         return Page();

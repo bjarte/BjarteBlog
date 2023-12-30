@@ -6,20 +6,11 @@ using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public partial class IndexModel : BasePageModel
+public partial class IndexModel(
+    IBlogPostLoader blogPostLoader,
+    INavigationOrchestrator navigationOrchestrator)
+    : BasePageModel
 {
-    private readonly IBlogPostLoader _blogPostLoader;
-    private readonly INavigationOrchestrator _navigationOrchestrator;
-
-    public IndexModel(
-        IBlogPostLoader blogPostLoader,
-        INavigationOrchestrator navigationOrchestrator
-    )
-    {
-        _blogPostLoader = blogPostLoader;
-        _navigationOrchestrator = navigationOrchestrator;
-    }
-
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
     public IActionResult OnGet(bool disableCache = false, string param1 = null, string param2 = null, string param3 = null, string param4 = null)
@@ -48,9 +39,9 @@ public partial class IndexModel : BasePageModel
                 varyByParam: nameof(disableCache));
         }
 
-        Navigation = _navigationOrchestrator.Get();
+        Navigation = navigationOrchestrator.Get();
 
-        BlogPosts = _blogPostLoader
+        BlogPosts = blogPostLoader
             .Get(10)
             .Result
             .Select(_ => new BlogPostViewModel(_));
