@@ -11,8 +11,18 @@
 <article>
 
     <h1>A programmer's notebook</h1>
-    
-    <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
+
+    <div class="page">
+
+        <div class="content">
+            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts"/>
+        </div>
+
+        <aside>
+            <partial name="~/Pages/Shared/_Aside.cshtml" model="@Model.Author"/>
+        </aside>
+
+    </div>
 
     <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
 

@@ -4,10 +4,7 @@ using Blog.Features.Category.Models;
 
 namespace Blog.Features.Category;
 
-public class CategoryOrchestrator(
-        IBlogPostLoader blogPostLoader,
-        ICategoryLoader categoryLoader
-    ) : ICategoryOrchestrator
+public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoader categoryLoader) : ICategoryOrchestrator
 {
     public IEnumerable<CategoryViewModel> GetCategories(string id, out string title)
     {

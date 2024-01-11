@@ -6,7 +6,7 @@ public class NavigationViewModel
     {
         if (links == null)
         {
-            Links = new List<LinkViewModel>();
+            Links = [];
             return;
         }
 

@@ -5,10 +5,7 @@ using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public class BlogPostModel(
-    IBlogPostOrchestrator blogPostOrchestrator,
-    INavigationOrchestrator navigationOrchestrator)
-    : BasePageModel
+public class BlogPostModel(IBlogPostOrchestrator blogPostOrchestrator, INavigationOrchestrator navigationOrchestrator) : BasePageModel
 {
     public string Id { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }

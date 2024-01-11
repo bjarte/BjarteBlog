@@ -1,8 +1,10 @@
 ﻿using Blog.Features.BlogPost.Models;
+using Blog.Features.Page;
+using Blog.Features.Page.Models;
 
 namespace Blog.Features.BlogPost;
 
-public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader) : IBlogPostOrchestrator
+public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pageLoader) : IBlogPostOrchestrator
 {
     public IEnumerable<BlogPostViewModel> GetBlogPosts(string id, bool preview, out string title)
     {
@@ -26,8 +28,19 @@ public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader) : IBlogPostOrc
 
         title = blogPostContent?.Title ?? id;
 
-        return blogPostContent == null
-            ? Enumerable.Empty<BlogPostViewModel>()
-            : new BlogPostViewModel[] { new(blogPostContent, true) };
+        if (blogPostContent == null)
+        {
+            return Enumerable.Empty<BlogPostViewModel>();
+        }
+
+        var blogPost = new BlogPostViewModel(blogPostContent, true);
+
+        var pageContent = pageLoader.Get("about-me").Result;
+        if (pageContent != null)
+        {
+            blogPost.Author = new PageViewModel(pageContent);
+        }
+
+        return new[] { blogPost };
     }
 }

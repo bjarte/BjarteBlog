@@ -2,16 +2,16 @@ using System.Text.RegularExpressions;
 using Blog.Features.BlogPost;
 using Blog.Features.BlogPost.Models;
 using Blog.Features.Navigation;
+using Blog.Features.Page;
+using Blog.Features.Page.Models;
 using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Pages;
 
-public partial class IndexModel(
-    IBlogPostLoader blogPostLoader,
-    INavigationOrchestrator navigationOrchestrator
-) : BasePageModel
+public partial class IndexModel(IBlogPostLoader blogPostLoader, INavigationOrchestrator navigationOrchestrator, IPageLoader pageLoader) : BasePageModel
 {
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
+    public PageViewModel Author { get; set; }
 
     public IActionResult OnGet(bool disableCache = false, string param1 = null, string param2 = null, string param3 = null, string param4 = null)
     {
@@ -51,6 +51,8 @@ public partial class IndexModel(
             .Get(10)
             .Result
             .Select(_ => new BlogPostViewModel(_));
+
+        Author = new PageViewModel(pageLoader.Get("about-me").Result);
 
         return Page();
     }

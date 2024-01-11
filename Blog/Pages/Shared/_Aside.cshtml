@@ -1,0 +1,8 @@
+﻿@using Blog.Features.Page.Models
+@model PageViewModel
+
+<h2>@Model.Title</h2>
+
+<partial name="~/Pages/Partials/_Image.cshtml" model="@Model.Image" />
+
+@Html.Raw(Model.Body)

@@ -1,0 +1,33 @@
+﻿@model BasePageModel
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Metadata -->
+<meta name="author" content="Bjarte Aune Olsen" />
+<meta name="description" content="A programmer's notebook is Bjarte Aune Olsen's notes of programming nuggets." />
+<meta name="copyright" content="Copyright 2001&ndash;@DateTime.Now.Year Bjarte Aune Olsen" />
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ffffff">
+<meta name="apple-mobile-web-app-title" content="Bjarte Aune Olsen">
+<meta name="application-name" content="Bjarte Aune Olsen">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
+
+@{
+    var title = "A programmer's notebook";
+    if (!string.IsNullOrEmpty(Model?.Title))
+    {
+        title = $"{Model.Title} – {title}";
+    }
+}
+<title>@title</title>
+
+<link href="~/css/site.css" rel="stylesheet" />
+
+<link href="~/lib/highlight/paraiso-dark.min.css" rel="stylesheet" />

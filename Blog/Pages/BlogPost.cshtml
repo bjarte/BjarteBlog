@@ -11,45 +11,53 @@
 
         <partial name="~/Pages/Partials/_Image.cshtml" model="@blogPost.Image" />
 
-        <div class="content">
+        <div class="page">
 
-            @if (blogPost.Categories?.Any() == true)
-            {
-                <p class="blogpost-categories">
-                    @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
-                    {
-                        <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
-                    }
+            <div class="content">
+                @if (blogPost.Categories?.Any() == true)
+                {
+                    <p class="blogpost-categories">
+                        @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
+                        {
+                            <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
+                        }
+                    </p>
+                }
+
+                <p>
+                    Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time>
                 </p>
-            }
 
-            <p>
-                Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time>
-            </p>
+                @if (!string.IsNullOrEmpty(blogPost.Intro))
+                {
+                    <p class="blogpost-intro">
+                        @blogPost.Intro
+                    </p>
+                }
 
-            @if (!string.IsNullOrEmpty(blogPost.Intro))
-            {
-                <p class="blogpost-intro">
-                    @blogPost.Intro
-                </p>
-            }
+                @Html.Raw(blogPost.Body)
 
-            @Html.Raw(blogPost.Body)
+                <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
+                
+                <h2>Comments</h2>
 
-            <partial name="~/Pages/Partials/_Form.cshtml" model="@blogPost.TypeformFormId" />
+                <div id="cusdis_thread"
+                     data-host="https://cusdis.com"
+                     data-app-id="8408891b-fcd5-4eb0-956e-48ffe66ef173"
+                     data-page-id="@Model.Id"
+                     data-page-url="@($"https://basementmedia.no/blogpost/{Model.Id}")"
+                     data-page-title="@Model.Title"></div>
+                <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
-            <div id="cusdis_thread"
-                 data-host="https://cusdis.com"
-                 data-app-id="8408891b-fcd5-4eb0-956e-48ffe66ef173"
-                 data-page-id="@Model.Id"
-                 data-page-url="@($"https://basementmedia.no/blogpost/{Model.Id}")"
-                 data-page-title="@Model.Title"></div>
-            <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+                <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
 
-            <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
+            </div>
+
+            <aside>
+                <partial name="~/Pages/Shared/_Aside.cshtml" model="@blogPost.Author" />
+            </aside>
 
         </div>
-
     }
     else if (Model.BlogPosts.Count() > 1)
     {

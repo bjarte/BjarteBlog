@@ -5,57 +5,53 @@
     return;
 }
 
-<div class="blogpost-list">
-
-    @foreach (var blogPost in Model.Take(3))
+@foreach (var blogPost in Model.Take(3))
+{
+    var blogPostUrl = Url.Page("BlogPost", new { id = blogPost.Slug });
+    if (blogPost.Image != null)
     {
-        var blogPostUrl = Url.Page("BlogPost", new { id = blogPost.Slug });
-        if (blogPost.Image != null)
-        {
-            blogPost.Image.LinkUrl = blogPostUrl;
-        }
-
-        <div class="blogpost-list-item">
-
-            <div>
-                <partial name="~/Pages/Partials/_Thumbnail.cshtml" model="@blogPost.Image" />
-            </div>
-
-            <div>
-                <a href="@blogPostUrl">
-                    <h2>@blogPost.Title</h2>
-                </a>
-
-                @if (!string.IsNullOrEmpty(blogPost.Intro))
-                {
-                    <p>@blogPost.Intro</p>
-                }
-
-                <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
-
-                @if (blogPost.Categories?.Any() == true)
-                {
-                    <p class="blogpost-categories">
-                        @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
-                        {
-                            <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
-                        }
-                    </p>
-                }
-
-            </div>
-
-        </div>
+        blogPost.Image.LinkUrl = blogPostUrl;
     }
 
-    @foreach (var blogPost in Model.Skip(3).Take(3))
-    {
+    <div class="blogpost-list-item">
+
         <div>
-            <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
-                <h3>@blogPost.Title</h3>
-            </a>
-            <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
+            <partial name="~/Pages/Partials/_Thumbnail.cshtml" model="@blogPost.Image" />
         </div>
-    }
 
-</div>
+        <div>
+            <a href="@blogPostUrl">
+                <h2>@blogPost.Title</h2>
+            </a>
+
+            @if (!string.IsNullOrEmpty(blogPost.Intro))
+            {
+                <p>@blogPost.Intro</p>
+            }
+
+            <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
+
+            @if (blogPost.Categories?.Any() == true)
+            {
+                <p class="blogpost-categories">
+                    @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
+                    {
+                        <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
+                    }
+                </p>
+            }
+
+        </div>
+
+    </div>
+}
+
+@foreach (var blogPost in Model.Skip(3).Take(3))
+{
+    <div>
+        <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
+            <h3>@blogPost.Title</h3>
+        </a>
+        <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
+    </div>
+}

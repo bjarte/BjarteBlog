@@ -4,11 +4,7 @@ using Blog.Features.Page;
 
 namespace Blog.Features.Navigation;
 
-public class NavigationOrchestrator(
-        IBlogPostLoader blogPostLoader,
-        ILinkLoader linkLoader,
-        IPageLoader pageLoader
-    ) : INavigationOrchestrator
+public class NavigationOrchestrator(IBlogPostLoader blogPostLoader, ILinkLoader linkLoader, IPageLoader pageLoader) : INavigationOrchestrator
 {
     public NavigationViewModel Get()
     {

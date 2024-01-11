@@ -38,7 +38,7 @@ public class AdvancedTextRenderer : IContentRenderer
 
         html.Append(encodedText);
 
-        foreach (var mark in text.Marks ?? new List<Mark>())
+        foreach (var mark in text.Marks ?? [])
         {
             html.Append($"</{MarkToHtmlTag(mark)}>");
             if (mark.Type.Equals("code"))

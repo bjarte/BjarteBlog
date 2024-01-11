@@ -6,10 +6,7 @@ using Contentful.Core.Search;
 
 namespace Blog.Features.Navigation;
 
-public class LinkLoader(
-        IAppSettingsService appSettingsService,
-        IContentfulClient contentDeliveryClient
-    ) : ILinkLoader
+public class LinkLoader(IAppSettingsService appSettingsService, IContentfulClient contentDeliveryClient) : ILinkLoader
 {
     public async Task<IEnumerable<LinkContent>> Get()
     {

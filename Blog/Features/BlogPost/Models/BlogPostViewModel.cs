@@ -19,6 +19,8 @@ public class BlogPostViewModel : BasePageViewModel
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
+    public PageViewModel Author { get; set; }
+
     public BlogPostViewModel(BlogPostContent content, bool showImageCaption = false)
     {
         if (content == null)

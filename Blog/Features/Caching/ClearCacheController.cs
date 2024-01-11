@@ -5,10 +5,7 @@ namespace Blog.Features.Caching;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ClearCacheController(
-        IAppSettingsService appSettingsService,
-        IOutputCachingService outputCachingService
-    ) : Controller
+public class ClearCacheController(IAppSettingsService appSettingsService, IOutputCachingService outputCachingService) : Controller
 {
     [HttpGet("{secret}")]
     public IActionResult Index(string secret)
