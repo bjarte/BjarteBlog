@@ -15,11 +15,22 @@
     <div class="page">
 
         <div class="content">
-            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts"/>
+
+            <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts.Take(3)" />
+
+            @foreach (var blogPost in Model.BlogPosts.Skip(3).Take(3))
+            {
+                <div>
+                    <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
+                        <h3>@blogPost.Title</h3>
+                    </a>
+                    <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
+                </div>
+            }
         </div>
 
         <aside>
-            <partial name="~/Pages/Shared/_Aside.cshtml" model="@Model.Author"/>
+            <partial name="~/Pages/Shared/_Aside.cshtml" model="@Model.Author" />
         </aside>
 
     </div>
