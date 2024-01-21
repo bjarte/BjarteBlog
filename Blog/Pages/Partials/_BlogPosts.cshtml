@@ -29,17 +29,9 @@
                 <p>@blogPost.Intro</p>
             }
 
-            <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
-
-            @if (blogPost.Categories?.Any() == true)
-            {
-                <p class="blogpost-categories">
-                    @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
-                    {
-                        <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
-                    }
-                </p>
-            }
+            <p class="published">
+                Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time>
+            </p>
 
         </div>
 
