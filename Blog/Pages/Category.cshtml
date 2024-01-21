@@ -15,28 +15,23 @@
         }
         else
         {
-            <p>Sorry, couldn't find any blog posts with category "@category.Title".</p>
+            <p>Sorry, couldn't find any blog posts with category <em>@category.Title</em>.</p>
         }
-
-        <p><a asp-page="Category" asp-route-id="">All categories →</a></p>
     }
     else if (Model.Categories.Count() > 1)
     {
         <h1>Categories</h1>
-
-        <div class="category-list">
-
-            <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories"/>
-
-        </div>
+        <partial name="~/Pages/Partials/_Categories.cshtml" model="@Model.Categories" />
     }
     else if (!string.IsNullOrEmpty(Model.Id))
     {
-        <h1>Sorry, couldn't find and categories with id "@Model.Id"</h1>
+        <h1>Cannot find category</h1>
+        <p>Sorry, couldn't find category <em>@Model.Id</em>.</p>
     }
     else
     {
-        <h1>Sorry, couldn't find any categories</h1>
+        <h1>Cannot find category</h1>
+        <p>Sorry, couldn't find any categories.</p>
     }
 
 </article>

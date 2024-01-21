@@ -50,8 +50,6 @@
                     data-page-title="@Model.Title"></div>
                 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
-                <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
-
             </div>
 
             <aside>
@@ -63,16 +61,17 @@
     else if (Model.BlogPosts.Count() > 1)
     {
         <h1>Blog posts</h1>
-
         <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts" />
     }
     else if (!string.IsNullOrEmpty(Model.Id))
     {
-        <h1>Sorry, couldn't find any blog posts with id "@Model.Id"</h1>
+        <h1>Cannot find blog post</h1>
+        <p>Sorry, couldn't find blog post with id <em>@Model.Id</em>.</p>
     }
     else
     {
-        <h1>Sorry, couldn't find any blog posts</h1>
+        <h1>Cannot find blog post</h1>
+        <p>Sorry, couldn't find any blog posts.</p>
     }
 
 </article>

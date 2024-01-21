@@ -9,18 +9,23 @@
 
         <partial name="~/Pages/Partials/_Image.cshtml" model="@Model.CurrentPage.Image" />
 
-        @Html.Raw(Model.CurrentPage.Body)
+        <div class="page">
+            <div></div>
+            <div class="content">
+                @Html.Raw(Model.CurrentPage.Body)
 
-        <p class="published">
-            Published: <time>@Model.CurrentPage.CreatedAt?.ToString("yyyy-MM-dd, HH:mm")</time> &ndash;
-            Updated: <time>@Model.CurrentPage.UpdatedAt?.ToString("yyyy-MM-dd, HH:mm")</time>
-        </p>
+                <p class="published">
+                    Published: <time>@Model.CurrentPage.CreatedAt?.ToString("yyyy-MM-dd")</time> &ndash;
+                    Updated: <time>@Model.CurrentPage.UpdatedAt?.ToString("yyyy-MM-dd")</time>
+                </p>
+            </div>
+            <div></div>
+        </div>
     }
     else
     {
-        <h1>Sorry, couldn't find page</h1>
-
-        <p>No page with id @Model.Id.</p>
+        <h1>Cannot find page</h1>
+        <p>Sorry, couldn't find page with id <em>@Model.Id</em>.</p>
     }
 
 </article>

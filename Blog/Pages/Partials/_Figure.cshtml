@@ -1,0 +1,33 @@
+@using Blog.Features.Image
+@model Blog.Features.Image.ImageViewModel
+
+@if (Model == null)
+{
+    return;
+}
+
+@{
+    const int maxImageWidth = 1200;
+    const int maxImageHeight = 400;
+
+    var imageWidth = Model.Width < maxImageWidth ? Model.Width : maxImageWidth;
+    var imageHeight = Model.Height < maxImageHeight ? Model.Height : maxImageHeight;
+}
+
+<figure>
+
+    <picture>
+        @foreach (var source in Model.GetImageSources(imageWidth, imageHeight))
+        {
+            <source media="@source.Media" srcset="@source.SrcSet">
+        }
+        <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth"
+            height="@imageHeight">
+    </picture>
+
+    @if (Model.ShowCaption && !string.IsNullOrEmpty(Model.Caption))
+    {
+        <figcaption>@Model.Caption</figcaption>
+    }
+
+</figure>

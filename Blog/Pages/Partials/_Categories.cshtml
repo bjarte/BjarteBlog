@@ -5,11 +5,13 @@
     return;
 }
 
-@foreach (var category in Model.OrderBy(_ => _.Title))
-{
-    <a asp-page="Category" asp-route-id="@category.Slug">
-        <div class="category-list-item">
-            <h3>@category.Title</h3>
-        </div>
-    </a>
-}
+<div class="category-list">
+    @foreach (var category in Model.OrderBy(_ => _.Title))
+    {
+        <a asp-page="Category" asp-route-id="@category.Slug">
+            <div class="category-list-item">
+                <h3>@category.Title</h3>
+            </div>
+        </a>
+    }
+</div>

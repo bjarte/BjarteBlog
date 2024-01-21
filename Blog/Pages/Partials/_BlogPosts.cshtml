@@ -14,8 +14,12 @@
         <div>
             @if (blogPost.Image != null)
             {
-                blogPost.Image.LinkUrl = blogPostUrl;
-                <partial name="~/Pages/Partials/_Thumbnail.cshtml" model="@blogPost.Image" />
+                var image = blogPost.Image;
+                image.LinkUrl = blogPostUrl;
+                image.Width = 300;
+                image.Height = 200;
+
+                <partial name="~/Pages/Partials/_Image.cshtml" model="@image" />
             }
         </div>
 

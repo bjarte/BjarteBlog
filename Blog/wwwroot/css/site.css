@@ -4,10 +4,6 @@ body {
   color: #0d1e27;
 }
 
-figure {
-  background-color: #e6e0db;
-}
-
 a {
   color: #206186;
 }
@@ -21,10 +17,6 @@ a:hover {
   body {
     background-color: #111a1f;
     color: #fcf6f0;
-  }
-
-  figure {
-    background-color: #1f2f38;
   }
 
   a {
@@ -43,14 +35,8 @@ a:hover {
   max-width: 1200px;
 }
 
-@media (max-width: 1200px) {
-  .container {
-    margin: 0;
-  }
-
-  aside {
-    margin-top: 5em;
-  }
+.page {
+  padding-top: 2em;
 }
 
 @media (min-width: 1200px) {
@@ -64,6 +50,16 @@ a:hover {
     display: grid;
     grid-template-columns: 200px minmax(0, 1fr) 200px;
     grid-column-gap: 2em;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    margin: 0;
+  }
+
+  aside {
+    margin-top: 5em;
   }
 }
 
@@ -101,7 +97,6 @@ h1 {
 
 h2 {
   font-size: 1.75em;
-  margin-top: 0;
 }
 
 h3 {
@@ -114,6 +109,12 @@ h4 {
 
 nav {
   font-size: 1.5em;
+}
+
+@media (max-width: 600px) {
+  nav {
+    font-size: 1em;
+  }
 }
 
 .intro {
@@ -202,10 +203,16 @@ body img {
 }
 
 figure {
-  padding: 0 0 3em 0;
+  margin: 0;
+}
+
+picture {
+  padding: 0;
+  margin: 0;
 }
 
 figcaption {
   font-size: 0.8em;
-  padding: 1em;
+  font-style: italic;
+  margin-top: 0;
 }

@@ -6,41 +6,13 @@
     return;
 }
 
-@{
-    const int imageWidth = 1200;
-    const int imageHeight = 400;
+@if (!string.IsNullOrEmpty(Model.LinkUrl))
+{
+    <a href="@Model.LinkUrl">
+        <partial name="~/Pages/Partials/_Figure.cshtml" model="@Model" />
+    </a>
 }
-
-<figure>
-    @if (!string.IsNullOrEmpty(Model.LinkUrl))
-    {
-        <a href="@Model.LinkUrl">
-            <picture>
-                @foreach (var source in Model.GetImageSources(imageWidth, imageHeight))
-                {
-                    <source media="@source.Media" srcset="@source.SrcSet">
-                }
-                <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth"
-                    height="@imageHeight">
-            </picture>
-        </a>
-    }
-    else
-    {
-        <picture>
-            @foreach (var source in Model.GetImageSources(imageWidth, imageHeight))
-            {
-                <source media="@source.Media" srcset="@source.SrcSet">
-            }
-            <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth"
-                height="@imageHeight">
-        </picture>
-    }
-
-    @if (Model.ShowCaption
-    && !string.IsNullOrEmpty(Model.Caption))
-    {
-        <figcaption>@Model.Caption</figcaption>
-    }
-
-</figure>
+else
+{
+    <partial name="~/Pages/Partials/_Figure.cshtml" model="@Model" />
+}

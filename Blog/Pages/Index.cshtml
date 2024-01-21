@@ -18,14 +18,12 @@
 
             <partial name="~/Pages/Partials/_BlogPosts.cshtml" model="@Model.BlogPosts.Take(3)" />
 
-            @foreach (var blogPost in Model.BlogPosts.Skip(3).Take(3))
+            @foreach (var blogPost in Model.BlogPosts.Skip(3).Take(7))
             {
-                <div>
-                    <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
-                        <h3>@blogPost.Title</h3>
-                    </a>
-                    <p>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></p>
-                </div>
+                <a href="@Url.Page("BlogPost", new { id = blogPost.Slug })">
+                    <h3>@blogPost.Title</h3>
+                </a>
+                <div>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></div>
             }
         </div>
 
@@ -34,7 +32,5 @@
         </aside>
 
     </div>
-
-    <p><a asp-page="BlogPost" asp-route-id="">All blog posts →</a></p>
 
 </article>
