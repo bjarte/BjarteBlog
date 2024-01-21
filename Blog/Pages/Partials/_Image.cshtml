@@ -20,7 +20,8 @@
                 {
                     <source media="@source.Media" srcset="@source.SrcSet">
                 }
-                <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth" height="@imageHeight">
+                <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth"
+                    height="@imageHeight">
             </picture>
         </a>
     }
@@ -31,16 +32,15 @@
             {
                 <source media="@source.Media" srcset="@source.SrcSet">
             }
-            <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth" height="@imageHeight">
+            <img src="@Model.GetUrl(imageWidth, imageHeight)" alt="@Model.AltText" width="@imageWidth"
+                height="@imageHeight">
         </picture>
     }
 
     @if (Model.ShowCaption
-        && !string.IsNullOrEmpty(Model.Caption))
+    && !string.IsNullOrEmpty(Model.Caption))
     {
-        <figcaption>
-            @Model.Caption
-        </figcaption>
+        <figcaption>@Model.Caption</figcaption>
     }
 
 </figure>
