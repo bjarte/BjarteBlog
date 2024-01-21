@@ -54,15 +54,16 @@ a:hover {
 }
 
 @media (min-width: 1200px) {
+  .front-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-column-gap: 2em;
+  }
+
   .page {
     display: grid;
     grid-template-columns: 200px minmax(0, 1fr) 200px;
     grid-column-gap: 2em;
-  }
-
-  .content {
-    max-width: 800px;
-    width: 100%;
   }
 }
 
