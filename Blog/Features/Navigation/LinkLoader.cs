@@ -1,16 +1,20 @@
 using System.Threading.Tasks;
-using Blog.Features.AppSettings;
+using Blog.Features.Contentful;
 using Blog.Features.Navigation.Models;
 using Contentful.Core;
 using Contentful.Core.Search;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Features.Navigation;
 
-public class LinkLoader(IAppSettingsService appSettingsService, IContentfulClient contentDeliveryClient) : ILinkLoader
+public class LinkLoader(
+    IOptions<ContentfulConfig> contentfulConfig,
+    IContentfulClient contentDeliveryClient
+) : ILinkLoader
 {
     public async Task<IEnumerable<LinkContent>> Get()
     {
-        var navigationSlug = appSettingsService.GetContentfulNavigation();
+        var navigationSlug = contentfulConfig.Value.Navigation;
 
         if (string.IsNullOrWhiteSpace(navigationSlug))
         {

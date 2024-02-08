@@ -15,8 +15,6 @@ public class RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer
         htmlRenderer.AddRenderer(new AdvancedTextRenderer());
         htmlRenderer.AddRenderer(codeBlockContentRenderer);
 
-        var html = htmlRenderer.ToHtml(content.Body).Result;
-
-        return html;
+        return htmlRenderer.ToHtml(content.Body).Result;
     }
 }

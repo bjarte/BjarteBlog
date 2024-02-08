@@ -1,5 +1,4 @@
-﻿using Blog.Features.AppSettings;
-using Blog.Features.BlogPost;
+﻿using Blog.Features.BlogPost;
 using Blog.Features.Category;
 using Blog.Features.Navigation;
 using Blog.Features.Page;
@@ -12,7 +11,6 @@ namespace Blog.Features.Initialization
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-            services.AddSingleton<IAppSettingsService, AppSettingsService>();
             services.AddSingleton<IBlogPostLoader, BlogPostLoader>();
             services.AddSingleton<IBlogPostOrchestrator, BlogPostOrchestrator>();
             services.AddSingleton<ICategoryLoader, CategoryLoader>();

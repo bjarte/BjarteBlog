@@ -4,7 +4,11 @@ using Blog.Features.Page;
 
 namespace Blog.Features.Navigation;
 
-public class NavigationOrchestrator(IBlogPostLoader blogPostLoader, ILinkLoader linkLoader, IPageLoader pageLoader) : INavigationOrchestrator
+public class NavigationOrchestrator(
+    IBlogPostLoader blogPostLoader,
+    ILinkLoader linkLoader,
+    IPageLoader pageLoader
+) : INavigationOrchestrator
 {
     public NavigationViewModel Get()
     {
@@ -14,7 +18,7 @@ public class NavigationOrchestrator(IBlogPostLoader blogPostLoader, ILinkLoader 
 
         var linkList = new List<LinkViewModel>();
 
-        foreach (var link in links ?? Enumerable.Empty<LinkContent>())
+        foreach (var link in links ?? [])
         {
             var linkViewModel = new LinkViewModel(link);
 

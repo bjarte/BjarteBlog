@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddDependencies();
+builder.Services.AddAppsettings();
 builder.Services.AddOutputCaching();
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();

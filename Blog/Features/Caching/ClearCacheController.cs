@@ -1,12 +1,17 @@
-﻿using Blog.Features.AppSettings;
+﻿using Microsoft.Extensions.Options;
 using WebEssentials.AspNetCore.OutputCaching;
 
 namespace Blog.Features.Caching;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ClearCacheController(IAppSettingsService appSettingsService, IOutputCachingService outputCachingService) : Controller
+public class ClearCacheController(
+    IOptions<OutputCacheConfig> outputCacheConfig,
+    IOutputCachingService outputCachingService
+) : Controller
 {
+    private readonly OutputCacheConfig _contentfulConfig = outputCacheConfig.Value;
+
     [HttpGet("{secret}")]
     public IActionResult Index(string secret)
     {
@@ -16,7 +21,7 @@ public class ClearCacheController(IAppSettingsService appSettingsService, IOutpu
             return new BadRequestResult();
         }
 
-        if (secret != appSettingsService.GetCacheKey())
+        if (secret != _contentfulConfig.CacheKey)
         {
             return new BadRequestResult();
         }

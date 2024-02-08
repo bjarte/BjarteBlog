@@ -1,17 +1,18 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Blog.Features.AppSettings;
+using Blog.Features.Contentful;
 using Blog.Features.Page.Models;
 using Blog.Features.Renderers;
 using Contentful.Core;
 using Contentful.Core.Search;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Features.Page;
 
 // ReSharper disable once UnusedMember.Global
 public class PageLoader : IPageLoader
 {
-    private const string pageContentType = "page";
+    private const string PageContentType = "page";
 
     // The Content Delivery API (CDA) is a read-only API for
     // retrieving content from Contentful. All content, both JSON
@@ -36,17 +37,17 @@ public class PageLoader : IPageLoader
     private readonly IRichTextRenderer _richTextRenderer;
 
     public PageLoader(
-        IAppSettingsService appSettingsService,
+        IOptions<ContentfulConfig> contentfulConfig,
         IContentfulClient contentDeliveryClient,
         IRichTextRenderer richTextRenderer
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
 
-        var options = appSettingsService.GetContentfulOptions();
-        options.UsePreviewApi = true;
+        var contentfulOptions = contentfulConfig.Value.ToContentfulOptions();
+        contentfulOptions.UsePreviewApi = true;
 
-        _previewClient = new ContentfulClient(new HttpClient(), options);
+        _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
         _richTextRenderer = richTextRenderer;
     }
@@ -59,7 +60,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(pageContentType)
+            .ContentTypeIs(PageContentType)
             .FieldEquals(_ => _.Slug, slug)
             // How many levels of references do we need? Default is 1,
             // the Page object itself. Set this to 2 to include the
@@ -87,7 +88,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(pageContentType)
+            .ContentTypeIs(PageContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(1);
 
@@ -105,7 +106,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(pageContentType)
+            .ContentTypeIs(PageContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(2);
 

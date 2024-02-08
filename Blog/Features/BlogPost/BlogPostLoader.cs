@@ -1,16 +1,17 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Blog.Features.AppSettings;
 using Blog.Features.BlogPost.Models;
+using Blog.Features.Contentful;
 using Blog.Features.Renderers;
 using Contentful.Core;
 using Contentful.Core.Search;
+using Microsoft.Extensions.Options;
 
 namespace Blog.Features.BlogPost;
 
 public class BlogPostLoader : IBlogPostLoader
 {
-    private const string blogPostContentType = "blogpost";
+    private const string BlogPostContentType = "blogpost";
 
     private readonly IContentfulClient _contentDeliveryClient;
     private readonly IContentfulClient _previewClient;
@@ -18,17 +19,16 @@ public class BlogPostLoader : IBlogPostLoader
     private readonly string _orderNewestFirst;
 
     public BlogPostLoader(
-        IAppSettingsService appSettingsService,
+        IOptions<ContentfulConfig> contentfulConfig,
         IContentfulClient contentDeliveryClient,
         IRichTextRenderer richTextRenderer
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
 
-        var options = appSettingsService.GetContentfulOptions();
-        options.UsePreviewApi = true;
-
-        _previewClient = new ContentfulClient(new HttpClient(), options);
+        var contentfulOptions = contentfulConfig.Value.ToContentfulOptions();
+        contentfulOptions.UsePreviewApi = true;
+        _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
         _orderNewestFirst = SortOrderBuilder<BlogPostContent>
             .New(_ => _.PublishedAt, SortOrder.Reversed)
@@ -45,7 +45,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(blogPostContentType)
+            .ContentTypeIs(BlogPostContentType)
             .FieldEquals(_ => _.Slug, slug)
             .Include(2);
 
@@ -70,7 +70,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(blogPostContentType)
+            .ContentTypeIs(BlogPostContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(1);
 
@@ -88,7 +88,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(blogPostContentType)
+            .ContentTypeIs(BlogPostContentType)
             .FieldEquals(_ => _.Sys.Id, id)
             .Include(2);
 
@@ -108,7 +108,7 @@ public class BlogPostLoader : IBlogPostLoader
     public async Task<IEnumerable<BlogPostContent>> Get(int take = 0)
     {
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(blogPostContentType)
+            .ContentTypeIs(BlogPostContentType)
             .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
             .Include(4)
             .OrderBy(_orderNewestFirst);
@@ -130,7 +130,7 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(blogPostContentType)
+            .ContentTypeIs(BlogPostContentType)
             .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
             .OrderBy(_orderNewestFirst);
 

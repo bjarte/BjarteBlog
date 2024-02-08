@@ -6,7 +6,9 @@ using Contentful.Core.Models;
 
 namespace Blog.Features.Renderers;
 
-public class CodeBlockContentRenderer(IContentfulClient contentDeliveryClient) : ICodeBlockContentRenderer
+public class CodeBlockContentRenderer(
+    IContentfulClient contentDeliveryClient
+) : ICodeBlockContentRenderer
 {
     public int Order { get; set; } = 20;
 
