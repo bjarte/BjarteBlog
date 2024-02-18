@@ -35,7 +35,7 @@
                 @if (blogPost.Categories?.Any() == true)
                 {
                     <p class="categories">
-                        Categories: 
+                        Categories:
                         @foreach (var category in blogPost.Categories.OrderBy(_ => _.Title))
                         {
                             <a asp-page="Category" asp-route-id="@category.Slug">@category.Title</a>
@@ -46,8 +46,8 @@
                 <h2>Comments</h2>
 
                 <div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="8408891b-fcd5-4eb0-956e-48ffe66ef173"
-                    data-page-id="@Model.Id" data-page-url="@($"https://basementmedia.no/blogpost/{Model.Id}")"
-                    data-page-title="@Model.Title"></div>
+                     data-page-id="@Model.Id" data-page-url="@($"https://basementmedia.no/blogpost/{Model.Id}")"
+                     data-page-title="@Model.Title"></div>
                 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
             </div>

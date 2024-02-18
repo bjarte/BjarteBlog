@@ -2,5 +2,6 @@
 
 public class OutputCacheConfig
 {
+    [Required]
     public string CacheKey { get; set; }
 }

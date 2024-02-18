@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Blog.Features.Initialization;
 
-public static class Appsettings
+public static class AppsettingsSetup
 {
     public static IServiceCollection AddAppsettings(this IServiceCollection services)
     {
