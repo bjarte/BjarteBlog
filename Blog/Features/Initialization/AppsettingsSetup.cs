@@ -1,6 +1,4 @@
 ﻿using Blog.Features.Caching;
-using Blog.Features.Contentful;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Blog.Features.Initialization;
 

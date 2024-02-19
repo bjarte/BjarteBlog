@@ -1,6 +1,4 @@
-﻿using Contentful.Core.Models;
-
-namespace Blog.Features.Contentful;
+﻿namespace Blog.Features.Contentful;
 
 public class ContentfulContent : IContent
 {

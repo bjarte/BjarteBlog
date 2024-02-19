@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Blog.Features.Category.Models;
-
-namespace Blog.Features.Category;
+﻿namespace Blog.Features.Category;
 
 public interface ICategoryLoader
 {

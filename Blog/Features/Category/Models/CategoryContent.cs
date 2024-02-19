@@ -1,6 +1,4 @@
-﻿using Blog.Features.Contentful;
-
-namespace Blog.Features.Category.Models;
+﻿namespace Blog.Features.Category.Models;
 
 public class CategoryContent : ContentfulContent
 {

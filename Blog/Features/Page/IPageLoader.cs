@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Blog.Features.Page.Models;
-
-namespace Blog.Features.Page;
+﻿namespace Blog.Features.Page;
 
 public interface IPageLoader
 {

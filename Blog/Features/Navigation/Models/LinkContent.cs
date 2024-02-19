@@ -1,5 +1,4 @@
-﻿using Blog.Features.Contentful;
-using Contentful.Core.Models.Management;
+﻿using Contentful.Core.Models.Management;
 
 namespace Blog.Features.Navigation.Models;
 

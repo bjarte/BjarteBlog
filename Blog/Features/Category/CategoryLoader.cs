@@ -1,8 +1,3 @@
-using System.Threading.Tasks;
-using Blog.Features.Category.Models;
-using Contentful.Core;
-using Contentful.Core.Search;
-
 namespace Blog.Features.Category;
 
 public class CategoryLoader : ICategoryLoader

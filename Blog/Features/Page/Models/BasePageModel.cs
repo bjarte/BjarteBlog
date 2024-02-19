@@ -1,7 +1,6 @@
-﻿using Blog.Features.Navigation.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using PageModel = Microsoft.AspNetCore.Mvc.RazorPages.PageModel;
 
-namespace Blog;
+namespace Blog.Features.Page.Models;
 
 // Base Razor Page model
 public class BasePageModel : PageModel

@@ -1,7 +1,4 @@
-﻿using Blog.Features.BlogPost.Models;
-using Blog.Features.Category.Models;
-
-namespace Blog.Features.Category;
+﻿namespace Blog.Features.Category;
 
 public interface ICategoryOrchestrator
 {

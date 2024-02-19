@@ -1,9 +1,4 @@
-﻿using Blog.Features.Navigation;
-using Blog.Features.Page;
-using Blog.Features.Page.Models;
-using WebEssentials.AspNetCore.OutputCaching;
-
-namespace Blog.Pages;
+﻿namespace Blog.Pages;
 
 public class PageModel(
     IPageLoader pageLoader,

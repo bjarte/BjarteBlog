@@ -1,9 +1,3 @@
-using Blog.Features.BlogPost.Models;
-using Blog.Features.Category;
-using Blog.Features.Category.Models;
-using Blog.Features.Navigation;
-using WebEssentials.AspNetCore.OutputCaching;
-
 namespace Blog.Pages;
 
 public class CategoryModel(

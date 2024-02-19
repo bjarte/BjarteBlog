@@ -1,12 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-using Blog.Features.Contentful;
-using Blog.Features.Page.Models;
-using Blog.Features.Renderers;
-using Contentful.Core;
-using Contentful.Core.Search;
-using Microsoft.Extensions.Options;
-
 namespace Blog.Features.Page;
 
 // ReSharper disable once UnusedMember.Global

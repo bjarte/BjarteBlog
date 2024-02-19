@@ -1,6 +1,4 @@
-﻿using Blog.Features.Image;
-
-namespace Blog.Features.Page.Models;
+﻿namespace Blog.Features.Page.Models;
 
 public class PageViewModel : BasePageViewModel
 {

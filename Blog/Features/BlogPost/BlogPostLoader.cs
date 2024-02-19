@@ -1,12 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
-using Blog.Features.BlogPost.Models;
-using Blog.Features.Contentful;
-using Blog.Features.Renderers;
-using Contentful.Core;
-using Contentful.Core.Search;
-using Microsoft.Extensions.Options;
-
 namespace Blog.Features.BlogPost;
 
 public class BlogPostLoader : IBlogPostLoader

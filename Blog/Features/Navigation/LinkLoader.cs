@@ -1,10 +1,3 @@
-using System.Threading.Tasks;
-using Blog.Features.Contentful;
-using Blog.Features.Navigation.Models;
-using Contentful.Core;
-using Contentful.Core.Search;
-using Microsoft.Extensions.Options;
-
 namespace Blog.Features.Navigation;
 
 public class LinkLoader(

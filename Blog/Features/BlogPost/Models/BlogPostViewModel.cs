@@ -1,8 +1,4 @@
-﻿using Blog.Features.Category.Models;
-using Blog.Features.Image;
-using Blog.Features.Page.Models;
-
-namespace Blog.Features.BlogPost.Models;
+﻿namespace Blog.Features.BlogPost.Models;
 
 public class BlogPostViewModel : BasePageViewModel
 {

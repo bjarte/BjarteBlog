@@ -1,10 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using Blog.Features.CodeBlock.Models;
-using Contentful.Core;
-using Contentful.Core.Models;
-
-namespace Blog.Features.Renderers;
+﻿namespace Blog.Features.Renderers;
 
 public class CodeBlockContentRenderer(
     IContentfulClient contentDeliveryClient

@@ -1,11 +1,4 @@
-﻿using Blog.Features.BlogPost;
-using Blog.Features.Category;
-using Blog.Features.Navigation;
-using Blog.Features.Page;
-using Blog.Features.Renderers;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Blog.Features.Initialization;
+﻿namespace Blog.Features.Initialization;
 
 public static class DependencyInjection
 {

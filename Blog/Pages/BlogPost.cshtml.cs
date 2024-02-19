@@ -1,9 +1,4 @@
-﻿using Blog.Features.BlogPost;
-using Blog.Features.BlogPost.Models;
-using Blog.Features.Navigation;
-using WebEssentials.AspNetCore.OutputCaching;
-
-namespace Blog.Pages;
+﻿namespace Blog.Pages;
 
 public class BlogPostModel(IBlogPostOrchestrator blogPostOrchestrator, INavigationOrchestrator navigationOrchestrator) : BasePageModel
 {

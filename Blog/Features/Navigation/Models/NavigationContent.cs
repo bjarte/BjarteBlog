@@ -1,6 +1,4 @@
-﻿using Blog.Features.Contentful;
-
-namespace Blog.Features.Navigation.Models;
+﻿namespace Blog.Features.Navigation.Models;
 
 public class NavigationContent : ContentfulContent
 {

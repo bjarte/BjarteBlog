@@ -1,7 +1,4 @@
-﻿using Blog.Features.Contentful;
-using Contentful.Core.Models;
-
-namespace Blog.Features.CodeBlock.Models;
+﻿namespace Blog.Features.CodeBlock.Models;
 
 public class CodeBlockContent : ContentfulContent
 {

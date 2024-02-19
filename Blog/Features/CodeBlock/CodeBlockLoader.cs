@@ -1,8 +1,3 @@
-using System.Threading.Tasks;
-using Blog.Features.CodeBlock.Models;
-using Contentful.Core;
-using Contentful.Core.Search;
-
 namespace Blog.Features.CodeBlock;
 
 public class CodeBlockLoader(IContentfulClient contentDeliveryClient) : ICodeBlockLoader

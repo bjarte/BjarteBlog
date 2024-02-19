@@ -1,8 +1,4 @@
-﻿using Blog.Features.BlogPost.Models;
-using Blog.Features.Page;
-using Blog.Features.Page.Models;
-
-namespace Blog.Features.BlogPost;
+﻿namespace Blog.Features.BlogPost;
 
 public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pageLoader) : IBlogPostOrchestrator
 {

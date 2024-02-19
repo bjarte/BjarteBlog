@@ -1,6 +1,4 @@
-﻿using Blog.Features.Navigation.Models;
-
-namespace Blog.Features.Navigation;
+﻿namespace Blog.Features.Navigation;
 
 public interface INavigationOrchestrator
 {

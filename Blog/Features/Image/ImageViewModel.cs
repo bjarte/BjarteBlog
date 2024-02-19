@@ -1,5 +1,3 @@
-using Contentful.Core.Models;
-
 namespace Blog.Features.Image;
 
 public class ImageViewModel(Asset image, bool showCaption = false)

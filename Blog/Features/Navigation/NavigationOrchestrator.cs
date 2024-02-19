@@ -1,8 +1,4 @@
-﻿using Blog.Features.BlogPost;
-using Blog.Features.Navigation.Models;
-using Blog.Features.Page;
-
-namespace Blog.Features.Navigation;
+﻿namespace Blog.Features.Navigation;
 
 public class NavigationOrchestrator(
     IBlogPostLoader blogPostLoader,

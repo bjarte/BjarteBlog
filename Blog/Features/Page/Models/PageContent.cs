@@ -1,8 +1,4 @@
-﻿using Blog.Features.Contentful;
-using Blog.Features.Renderers;
-using Contentful.Core.Models;
-
-namespace Blog.Features.Page.Models;
+﻿namespace Blog.Features.Page.Models;
 
 public class PageContent : ContentfulContent, IHasBody
 {

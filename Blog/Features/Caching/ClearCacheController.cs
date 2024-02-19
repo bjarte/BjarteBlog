@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using WebEssentials.AspNetCore.OutputCaching;
-
-namespace Blog.Features.Caching;
+﻿namespace Blog.Features.Caching;
 
 [Route("api/[controller]")]
 [ApiController]

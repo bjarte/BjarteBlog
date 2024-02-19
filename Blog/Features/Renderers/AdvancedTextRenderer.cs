@@ -1,7 +1,4 @@
 ﻿using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Contentful.Core.Models;
 
 namespace Blog.Features.Renderers;
 

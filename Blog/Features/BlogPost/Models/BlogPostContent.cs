@@ -1,9 +1,4 @@
-﻿using Blog.Features.Category.Models;
-using Blog.Features.Contentful;
-using Blog.Features.Renderers;
-using Contentful.Core.Models;
-
-namespace Blog.Features.BlogPost.Models;
+﻿namespace Blog.Features.BlogPost.Models;
 
 public class BlogPostContent : ContentfulContent, IHasBody
 {

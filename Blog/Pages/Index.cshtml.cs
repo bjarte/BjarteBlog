@@ -1,11 +1,3 @@
-using System.Text.RegularExpressions;
-using Blog.Features.BlogPost;
-using Blog.Features.BlogPost.Models;
-using Blog.Features.Navigation;
-using Blog.Features.Page;
-using Blog.Features.Page.Models;
-using WebEssentials.AspNetCore.OutputCaching;
-
 namespace Blog.Pages;
 
 public partial class IndexModel(IBlogPostLoader blogPostLoader, INavigationOrchestrator navigationOrchestrator, IPageLoader pageLoader) : BasePageModel
