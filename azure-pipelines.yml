@@ -30,12 +30,11 @@ steps:
     zipAfterPublish: true
     modifyOutputPath: true
 
-- task: FileTransform@1
-  displayName: 'File transformation: appsettings.json'
+- task: FileTransform@2
   inputs:
     folderPath: '$(Build.ArtifactStagingDirectory)/Blog.zip'
-    targetFiles: '**/appsettings.json'
-    fileType: json
+    enableXmlTransform: false
+    jsonTargetFiles: '**/appsettings.json'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish package to deploy pipeline'
