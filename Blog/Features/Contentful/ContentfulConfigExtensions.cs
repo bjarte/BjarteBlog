@@ -15,8 +15,7 @@ public static class ContentfulConfigExtensions
             Environment = config.Environment,
 
             MaxNumberOfRateLimitRetries = 0,
-            UsePreviewApi = false,
-            ResolveEntriesSelectively = false
+            UsePreviewApi = false
         };
     }
 }

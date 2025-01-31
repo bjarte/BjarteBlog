@@ -6,11 +6,10 @@ public class NavigationOrchestrator(
     IPageLoader pageLoader
 ) : INavigationOrchestrator
 {
-    public NavigationViewModel Get()
+    public async Task<NavigationViewModel> Get()
     {
-        var links = linkLoader
-            .Get()?
-            .Result;
+        var links = await linkLoader
+            .Get();
 
         var linkList = new List<LinkViewModel>();
 

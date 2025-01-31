@@ -3,11 +3,6 @@
 @page "{param1?}/{param2?}/{param3?}/{param4?}"
 @model IndexModel
 
-@if (Model == null)
-{
-    return;
-}
-
 <article>
 
     <h1>A programmer's notebook</h1>
@@ -25,6 +20,7 @@
                 </a>
                 <div>Published: <time>@blogPost.PublishedAt?.ToString("yyyy-MM-dd")</time></div>
             }
+
         </div>
 
         <aside>

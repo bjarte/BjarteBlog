@@ -1,3 +1,5 @@
+using Contentful.Core.Errors;
+
 namespace Blog.Features.Category;
 
 public class CategoryLoader : ICategoryLoader
@@ -10,7 +12,7 @@ public class CategoryLoader : ICategoryLoader
         _contentDeliveryClient = contentDeliveryClient;
 
         _orderAlphabetically = SortOrderBuilder<CategoryContent>
-            .New(_ => _.Title)
+            .New(content => content.Title)
             .Build();
     }
 
@@ -23,12 +25,19 @@ public class CategoryLoader : ICategoryLoader
 
         var query = new QueryBuilder<CategoryContent>()
             .ContentTypeIs("category")
-            .FieldEquals(_ => _.Slug, slug);
+            .FieldEquals(content => content.Slug, slug);
 
-        var entries = await _contentDeliveryClient
-            .GetEntries(query);
+        try
+        {
+            var categories = await _contentDeliveryClient
+                .GetEntries(query);
 
-        return entries.FirstOrDefault();
+            return categories.FirstOrDefault();
+        }
+        catch (ContentfulException)
+        {
+            return null;
+        }
     }
 
     public async Task<IEnumerable<CategoryContent>> Get()
@@ -38,7 +47,14 @@ public class CategoryLoader : ICategoryLoader
             .Include(1)
             .OrderBy(_orderAlphabetically);
 
-        return await _contentDeliveryClient
-            .GetEntries(query);
+        try
+        {
+            return await _contentDeliveryClient
+                .GetEntries(query); ;
+        }
+        catch (ContentfulException)
+        {
+            return [];
+        }
     }
 }

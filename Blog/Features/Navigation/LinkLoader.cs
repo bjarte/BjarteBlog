@@ -1,3 +1,5 @@
+using Contentful.Core.Errors;
+
 namespace Blog.Features.Navigation;
 
 public class LinkLoader(
@@ -16,12 +18,19 @@ public class LinkLoader(
 
         var query = new QueryBuilder<NavigationContent>()
             .ContentTypeIs("navigation")
-            .FieldEquals(_ => _.Slug, navigationSlug)
+            .FieldEquals(content => content.Slug, navigationSlug)
             .Include(2);
 
-        var navigations = await contentDeliveryClient
-            .GetEntries(query);
+        try
+        {
+            var navigations = await contentDeliveryClient
+                .GetEntries(query);
 
-        return navigations.FirstOrDefault()?.Links;
+            return navigations?.FirstOrDefault()?.Links;
+        }
+        catch (ContentfulException)
+        {
+            return [];
+        }
     }
 }

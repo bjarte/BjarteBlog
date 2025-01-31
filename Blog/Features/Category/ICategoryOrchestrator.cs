@@ -2,6 +2,6 @@
 
 public interface ICategoryOrchestrator
 {
-    public IEnumerable<CategoryViewModel> GetCategories(string id, out string title);
-    public IEnumerable<BlogPostViewModel> GetBlogPosts(string categoryId);
+    public Task<List<CategoryViewModel>> GetCategories(string id);
+    public Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string categoryId);
 }

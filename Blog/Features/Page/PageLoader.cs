@@ -1,3 +1,5 @@
+using Contentful.Core.Errors;
+
 namespace Blog.Features.Page;
 
 // ReSharper disable once UnusedMember.Global
@@ -14,7 +16,7 @@ public class PageLoader : IPageLoader
     // The Preview API is for previewing unpublished content as though
     // it were published. It maintains the same behaviour and parameters
     // as the CDA, but delivers the latest draft for entries and assets.
-    private readonly IContentfulClient _previewClient;
+    private readonly ContentfulClient _previewClient;
 
     // The Content Management API (CMA) is a restful API for
     // managing content in your Contentful spaces. You can create,
@@ -52,23 +54,30 @@ public class PageLoader : IPageLoader
 
         var query = new QueryBuilder<PageContent>()
             .ContentTypeIs(PageContentType)
-            .FieldEquals(_ => _.Slug, slug)
+            .FieldEquals(content => content.Slug, slug)
             // How many levels of references do we need? Default is 1,
             // the Page object itself. Set this to 2 to include the
             // referenced Image object.
             .Include(2);
 
-        var pages = await _contentDeliveryClient
-            .GetEntries(query);
+        try
+        {
+            var pages = await _contentDeliveryClient
+                .GetEntries(query);
 
-        var page = pages.FirstOrDefault();
-        if (page == null)
+            var page = pages.FirstOrDefault();
+            if (page == null)
+            {
+                return null;
+            }
+
+            page.BodyString = _richTextRenderer.BodyToHtml(page);
+            return page;
+        }
+        catch (ContentfulException)
         {
             return null;
         }
-
-        page.BodyString = _richTextRenderer.BodyToHtml(page);
-        return page;
     }
 
     public async Task<string> GetSlug(string id)
@@ -80,7 +89,7 @@ public class PageLoader : IPageLoader
 
         var query = new QueryBuilder<PageContent>()
             .ContentTypeIs(PageContentType)
-            .FieldEquals(_ => _.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, id)
             .Include(1);
 
         var pages = await _contentDeliveryClient
@@ -98,7 +107,7 @@ public class PageLoader : IPageLoader
 
         var query = new QueryBuilder<PageContent>()
             .ContentTypeIs(PageContentType)
-            .FieldEquals(_ => _.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, id)
             .Include(2);
 
         var pages = await _previewClient

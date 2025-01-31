@@ -2,37 +2,31 @@
 
 public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoader categoryLoader) : ICategoryOrchestrator
 {
-    public IEnumerable<CategoryViewModel> GetCategories(string id, out string title)
+    public async Task<List<CategoryViewModel>> GetCategories(string id)
     {
         if (string.IsNullOrEmpty(id))
         {
-            title = "Categories";
+            var categoryContents = await categoryLoader.Get();
 
-            return categoryLoader
-                .Get()
-                .Result
-                .Select(_ => new CategoryViewModel(_));
+            return categoryContents
+                .Select(content => new CategoryViewModel(content))
+                .ToList();
         }
 
-        var categoryContent = categoryLoader
-            .Get(id)
-            .Result;
-
-        title = $"Category: {categoryContent?.Title ?? id}";
+        var categoryContent = await categoryLoader.Get(id);
 
         return categoryContent == null
-            ? Enumerable.Empty<CategoryViewModel>()
-            : new CategoryViewModel[] { new(categoryContent) };
+            ? []
+            : [new CategoryViewModel(categoryContent)];
     }
 
-    public IEnumerable<BlogPostViewModel> GetBlogPosts(string categoryId)
+    public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string categoryId)
     {
-        var blogPostContents = blogPostLoader
-            .GetWithCategory(categoryId)
-            .Result;
+        var blogPostContents = await blogPostLoader
+            .GetWithCategory(categoryId);
 
         return blogPostContents == null
-            ? Enumerable.Empty<BlogPostViewModel>()
-            : blogPostContents.Select(_ => new BlogPostViewModel(_));
+            ? []
+            : blogPostContents.Select(content => new BlogPostViewModel(content));
     }
 }

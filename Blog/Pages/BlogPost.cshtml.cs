@@ -5,7 +5,7 @@ public class BlogPostModel(IBlogPostOrchestrator blogPostOrchestrator, INavigati
     public string Id { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public IActionResult OnGet(string id, bool preview = false, bool disableCache = false)
+    public async Task<IActionResult> OnGet(string id, bool preview = false, bool disableCache = false)
     {
         Id = id;
 
@@ -16,10 +16,13 @@ public class BlogPostModel(IBlogPostOrchestrator blogPostOrchestrator, INavigati
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        Navigation = navigationOrchestrator.Get();
+        Navigation = await navigationOrchestrator.Get();
 
-        BlogPosts = blogPostOrchestrator.GetBlogPosts(id, preview, out var title);
-        Title = title;
+        BlogPosts = await blogPostOrchestrator.GetBlogPosts(id, preview);
+
+        Title = !string.IsNullOrEmpty(id)
+            ? BlogPosts.FirstOrDefault()?.Title ?? id
+            : "Blog posts";
 
         return Page();
     }

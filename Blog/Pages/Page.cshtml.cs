@@ -8,7 +8,7 @@ public class PageModel(
     public string Id { get; set; }
     public PageViewModel CurrentPage { get; set; }
 
-    public IActionResult OnGet(string id, bool preview = false, bool disableCache = false)
+    public async Task<IActionResult> OnGet(string id, bool preview = false, bool disableCache = false)
     {
         Id = id;
 
@@ -19,7 +19,7 @@ public class PageModel(
                 varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
         }
 
-        Navigation = navigationOrchestrator.Get();
+        Navigation = await navigationOrchestrator.Get();
 
         var pageContent = preview
             ? pageLoader

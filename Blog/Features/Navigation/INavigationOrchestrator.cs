@@ -2,5 +2,5 @@
 
 public interface INavigationOrchestrator
 {
-    public NavigationViewModel Get();
+    public Task<NavigationViewModel> Get();
 }

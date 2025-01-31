@@ -9,7 +9,7 @@ public class CategoryModel(
     public IEnumerable<CategoryViewModel> Categories { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public IActionResult OnGet(string id, bool disableCache = false)
+    public async Task<IActionResult> OnGet(string id, bool disableCache = false)
     {
         Id = id;
 
@@ -20,12 +20,15 @@ public class CategoryModel(
                 varyByParam: $"{nameof(id)},{nameof(disableCache)}");
         }
 
-        Navigation = navigationOrchestrator.Get();
+        Navigation = await navigationOrchestrator.Get();
 
-        Categories = orchestrator.GetCategories(id, out var title);
-        Title = title;
+        Categories = await orchestrator.GetCategories(id);
 
-        BlogPosts = orchestrator.GetBlogPosts(id);
+        Title = Categories.Count() == 1
+            ? $"Category: {Categories.FirstOrDefault()?.Title ?? id}"
+            : "Categories";
+
+        BlogPosts = await orchestrator.GetBlogPosts(id);
 
         return Page();
     }

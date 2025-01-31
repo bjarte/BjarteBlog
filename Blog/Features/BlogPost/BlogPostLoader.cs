@@ -1,3 +1,5 @@
+using Contentful.Core.Errors;
+
 namespace Blog.Features.BlogPost;
 
 public class BlogPostLoader : IBlogPostLoader
@@ -5,7 +7,7 @@ public class BlogPostLoader : IBlogPostLoader
     private const string BlogPostContentType = "blogpost";
 
     private readonly IContentfulClient _contentDeliveryClient;
-    private readonly IContentfulClient _previewClient;
+    private readonly ContentfulClient _previewClient;
     private readonly IRichTextRenderer _richTextRenderer;
     private readonly string _orderNewestFirst;
 
@@ -22,7 +24,7 @@ public class BlogPostLoader : IBlogPostLoader
         _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
         _orderNewestFirst = SortOrderBuilder<BlogPostContent>
-            .New(_ => _.PublishedAt, SortOrder.Reversed)
+            .New(content => content.PublishedAt, SortOrder.Reversed)
             .Build();
 
         _richTextRenderer = richTextRenderer;
@@ -37,20 +39,26 @@ public class BlogPostLoader : IBlogPostLoader
 
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(_ => _.Slug, slug)
+            .FieldEquals(content => content.Slug, slug)
             .Include(2);
 
-        var blogPosts = await _contentDeliveryClient
-            .GetEntries(query);
+        try
+        {
+            var blogPosts = await _contentDeliveryClient
+                .GetEntries(query);
+            var blogPost = blogPosts.FirstOrDefault();
+            if (blogPost == null)
+            {
+                return null;
+            }
 
-        var blogPost = blogPosts.FirstOrDefault();
-        if (blogPost == null)
+            blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
+            return blogPost;
+        }
+        catch (ContentfulException)
         {
             return null;
         }
-
-        blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
-        return blogPost;
     }
 
     public async Task<string> GetSlug(string id)
@@ -62,7 +70,7 @@ public class BlogPostLoader : IBlogPostLoader
 
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(_ => _.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, id)
             .Include(1);
 
         var pages = await _contentDeliveryClient
@@ -80,7 +88,7 @@ public class BlogPostLoader : IBlogPostLoader
 
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(_ => _.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, id)
             .Include(2);
 
         var blogPosts = await _previewClient
@@ -100,7 +108,7 @@ public class BlogPostLoader : IBlogPostLoader
     {
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
+            .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
             .Include(4)
             .OrderBy(_orderNewestFirst);
 
@@ -109,29 +117,47 @@ public class BlogPostLoader : IBlogPostLoader
             query = query.Limit(take);
         }
 
-        return await _contentDeliveryClient
-             .GetEntries(query);
+        try
+        {
+            return await _contentDeliveryClient
+                .GetEntries(query);
+        }
+        catch (ContentfulException)
+        {
+            // Cannot access Contentful
+            return [];
+        }
     }
 
     public async Task<IEnumerable<BlogPostContent>> GetWithCategory(string categorySlug)
     {
         if (string.IsNullOrEmpty(categorySlug))
         {
-            return Enumerable.Empty<BlogPostContent>();
+            return [];
         }
 
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(_ => _.IncludeInSearchAndNavigation, "true")
+            .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
             .OrderBy(_orderNewestFirst);
 
-        return (await _contentDeliveryClient
-            .GetEntries(query))
-            .Where(blogPost => blogPost.Categories != null
-                && blogPost
-                    .Categories
-                    .Select(categoryContent => categoryContent.Slug)
-                    .Contains(categorySlug)
-            );
+        try
+        {
+            var blogPosts = await _contentDeliveryClient
+                .GetEntries(query);
+
+            return blogPosts
+                .Where(blogPost => blogPost.Categories != null
+                                   && blogPost
+                                       .Categories
+                                       .Select(categoryContent => categoryContent.Slug)
+                                       .Contains(categorySlug)
+                );
+            ;
+        }
+        catch (ContentfulException)
+        {
+            return [];
+        }
     }
 }

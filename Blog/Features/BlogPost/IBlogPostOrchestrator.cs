@@ -2,5 +2,5 @@
 
 public interface IBlogPostOrchestrator
 {
-    public IEnumerable<BlogPostViewModel> GetBlogPosts(string id, bool preview, out string title);
+    public Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string id, bool preview);
 }

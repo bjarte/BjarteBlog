@@ -4,7 +4,7 @@ public class RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer
 {
     public string BodyToHtml(IHasBody content)
     {
-        if (content?.Body?.Content?.Any() != true)
+        if (content?.Body?.Content?.Count > 0 != true)
         {
             return string.Empty;
         }

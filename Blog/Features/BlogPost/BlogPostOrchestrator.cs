@@ -2,31 +2,26 @@
 
 public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pageLoader) : IBlogPostOrchestrator
 {
-    public IEnumerable<BlogPostViewModel> GetBlogPosts(string id, bool preview, out string title)
+    public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string id, bool preview)
     {
         if (string.IsNullOrEmpty(id))
         {
-            title = "Blog posts";
+            var blogPosts = await blogPostLoader
+                .Get(0);
 
-            return blogPostLoader
-                .Get(0)
-                .Result
-                .Select(_ => new BlogPostViewModel(_));
+            return blogPosts
+                .Select(content => new BlogPostViewModel(content));
         }
 
         var blogPostContent = preview
-            ? blogPostLoader
+            ? await blogPostLoader
                 .GetPreview(id)
-                .Result
-            : blogPostLoader
-                .Get(id)
-                .Result;
-
-        title = blogPostContent?.Title ?? id;
+            : await blogPostLoader
+                .Get(id);
 
         if (blogPostContent == null)
         {
-            return Enumerable.Empty<BlogPostViewModel>();
+            return [];
         }
 
         var blogPost = new BlogPostViewModel(blogPostContent, true);
@@ -37,6 +32,6 @@ public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pa
             blogPost.Author = new PageViewModel(pageContent);
         }
 
-        return new[] { blogPost };
+        return [blogPost];
     }
 }
