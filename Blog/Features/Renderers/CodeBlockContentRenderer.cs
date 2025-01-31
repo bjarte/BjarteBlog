@@ -20,7 +20,13 @@ public class CodeBlockContentRenderer(
 
         CodeBlockContent codeBlockContent;
 
-        var id = customNode.JObject.Value<string>("$id");
+        //Newtonsoft.Json.Linq.JObject jObject = customNode.JObject;
+
+        // TODO: This has stopped working
+
+        var temp = customNode.JObject;
+
+        var id = "x"; //customNode.JObject["$id"]   //["$id"].Value //.Value<string>("$id");
         try
         {
             codeBlockContent = await contentDeliveryClient
