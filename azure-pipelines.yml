@@ -30,11 +30,11 @@ steps:
     zipAfterPublish: true
     modifyOutputPath: true
 
-# - task: FileTransform@2
-#   inputs:
-#     folderPath: '$(System.DefaultWorkingDirectory)/Blog.zip'
-#     enableXmlTransform: false
-#     jsonTargetFiles: '**/appsettings.json'
+- task: FileTransform@2
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)/Blog.zip'
+    enableXmlTransform: false
+    jsonTargetFiles: '**/appsettings.json'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish package to deploy pipeline'
