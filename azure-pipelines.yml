@@ -30,12 +30,11 @@ steps:
 
 - task: FileTransform@2
   inputs:
-    folderPath: '$(Build.ArtifactStagingDirectory)/Blog.zip'
+    folderPath: '**/Blog.zip'
     enableXmlTransform: false
     jsonTargetFiles: '**/appsettings.json'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish package to deploy pipeline'
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop'
