@@ -30,7 +30,7 @@ steps:
 
 - task: FileTransform@2
   inputs:
-    folderPath: '**/Blog.zip'
+    folderPath: '$(System.DefaultWorkingDirectory)/Blog.zip'
     enableXmlTransform: false
     jsonTargetFiles: '**/appsettings.json'
 
