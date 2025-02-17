@@ -26,10 +26,6 @@ steps:
     projects: 'Blog/Blog.csproj'
     command: 'publish'
     configuration: 'Release'
-    arguments: '-o $(Build.ArtifactStagingDirectory)'
-    publishWebProjects: false
-    zipAfterPublish: true
-    modifyOutputPath: true
 
 - task: FileTransform@2
   inputs:
