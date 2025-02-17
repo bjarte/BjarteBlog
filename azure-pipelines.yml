@@ -26,6 +26,7 @@ steps:
     projects: 'Blog/Blog.csproj'
     command: 'publish'
     configuration: 'Release'
+    zipAfterPublish: true
 
 - task: FileTransform@2
   inputs:
