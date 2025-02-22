@@ -22,7 +22,7 @@ public class AdvancedTextRenderer : IContentRenderer
 
         var html = new StringBuilder();
 
-        foreach (var mark in text.Marks ?? new List<Mark>())
+        foreach (var mark in text.Marks ?? [])
         {
             if (mark.Type.Equals("code"))
             {

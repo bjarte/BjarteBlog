@@ -1,4 +1,4 @@
-﻿namespace Blog.Features.Category;
+namespace Blog.Features.Category;
 
 public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoader categoryLoader) : ICategoryOrchestrator
 {
@@ -17,7 +17,7 @@ public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoade
 
         return categoryContent == null
             ? []
-            : [new CategoryViewModel(categoryContent)];
+            : [new(categoryContent)];
     }
 
     public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string categoryId)
@@ -27,6 +27,6 @@ public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoade
 
         return blogPostContents == null
             ? []
-            : blogPostContents.Select(content => new BlogPostViewModel(content));
+            : blogPostContents.Select(_ => new BlogPostViewModel(_));
     }
 }
