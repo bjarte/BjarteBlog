@@ -7,7 +7,7 @@ public class ClearCacheController(
     IOutputCachingService outputCachingService
 ) : Controller
 {
-    private readonly OutputCacheConfig _contentfulConfig = outputCacheConfig.Value;
+    private readonly OutputCacheConfig _outputCacheConfig = outputCacheConfig.Value;
 
     [HttpGet("{secret}")]
     public IActionResult Index(string secret)
@@ -18,7 +18,7 @@ public class ClearCacheController(
             return new BadRequestResult();
         }
 
-        if (secret != _contentfulConfig.CacheKey)
+        if (secret != _outputCacheConfig.CacheKey)
         {
             return new BadRequestResult();
         }
