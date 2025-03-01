@@ -10,8 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="contentful.aspnetcore" Version="8.3.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
+    <PackageReference Include="contentful.aspnetcore" Version="9.0.0-beta4" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0-preview.1.25080.5" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0-preview.1.25080.5" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WebEssentials.AspNetCore.OutputCaching" Version="1.0.43" />
   </ItemGroup>
 
