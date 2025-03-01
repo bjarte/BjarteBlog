@@ -14,8 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contentful", "Contentful", "{77BB3DBF-0B1C-451C-9B98-EB0EA9A15C31}"
 	ProjectSection(SolutionItems) = preProject
 		Contentful\content-model.json = Contentful\content-model.json
-		Contentful\export-config.json = Contentful\export-config.json
-		Contentful\import-config.json = Contentful\import-config.json
+		Contentful\export-config-sample.json = Contentful\export-config-sample.json
+		Contentful\import-config-sample.json = Contentful\import-config-sample.json
 		Contentful\README.md = Contentful\README.md
 	EndProjectSection
 EndProject
