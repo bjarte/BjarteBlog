@@ -1,6 +1,6 @@
 # Bjarte's Blog
 
-Blog available at https://basementmedia.no
+Blog available at <https://basementmedia.no>
 
 The blog is made up of a .NET 8 web application and Contentful as the content source.
 
