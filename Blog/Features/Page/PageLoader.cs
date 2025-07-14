@@ -2,7 +2,6 @@ using Contentful.Core.Errors;
 
 namespace Blog.Features.Page;
 
-// ReSharper disable once UnusedMember.Global
 public class PageLoader : IPageLoader
 {
     private const string PageContentType = "page";

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UserSecretsId>f0530f7b-0534-4e4c-bab7-5c1a8e1b2c7c</UserSecretsId>
   </PropertyGroup>
 
@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="contentful.aspnetcore" Version="9.0.0-beta4" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0-preview.1.25080.5" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0-preview.1.25080.5" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0-preview.5.25277.114" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0-preview.5.25277.114" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="WebEssentials.AspNetCore.OutputCaching" Version="1.0.43" />
   </ItemGroup>
