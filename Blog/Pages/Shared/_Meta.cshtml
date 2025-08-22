@@ -1,4 +1,4 @@
-﻿@model BasePageModel
+@model BasePageModel
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,15 +18,6 @@
 <meta name="application-name" content="Bjarte Aune Olsen">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">
-
-@{
-    var title = "A programmer's notebook";
-    if (!string.IsNullOrEmpty(Model?.Title))
-    {
-        title = $"{Model.Title} – {title}";
-    }
-}
-<title>@title</title>
 
 <link href="~/lib/highlight/paraiso-dark.min.css" rel="stylesheet" />
 <link href="~/css/site.css" rel="stylesheet" />
