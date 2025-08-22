@@ -19,14 +19,7 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">
 
-@{
-    var title = "A programmer's notebook";
-    if (!string.IsNullOrEmpty(Model?.Title))
-    {
-        title = $"{Model.Title} – {title}";
-    }
-}
-<title>@title</title>
-
 <link href="~/lib/highlight/paraiso-dark.min.css" rel="stylesheet" />
 <link href="~/css/site.css" rel="stylesheet" />
+
+<script defer data-domain="basementmedia.no" src="https://plausible.io/js/script.js"></script>

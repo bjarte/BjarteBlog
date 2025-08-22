@@ -1,14 +1,36 @@
 ﻿@model BasePageModel
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <partial name="~/Pages/Shared/_Meta.cshtml" />
-</head>
 
+    <partial name="~/Pages/Shared/_Meta.cshtml" />
+
+    @{
+        var title = "A programmer's notebook";
+        if (!string.IsNullOrEmpty(Model?.Title))
+        {
+            title = $"{Model.Title} – {title}";
+        }
+    }
+    <title>@title</title>
+
+</head>
 <body>
 
     <div class="container">
+        
+        @{
+            var utcNow = DateTime.UtcNow;
+        }
+        <environment include="Development">
+            <p style="text-align: center">Environment: Development – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
+        </environment>
+        <environment include="Staging">
+            <p style="text-align: center">Environment: Staging – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
+        </environment>
+        <environment include="Production">
+            <!-- Environment: Production – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC -->
+        </environment>
 
         <nav>
             <partial name="~/Pages/Shared/_Navigation.cshtml" />
