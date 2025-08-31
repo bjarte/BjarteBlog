@@ -9,8 +9,6 @@ public class LinkLoader(
     IMemoryCache cache
 ) : ILinkLoader
 {
-    private const string NavigationContentType = "navigation";
-
     public async Task<IEnumerable<LinkContent>> Get()
     {
         var navigationSlug = contentfulConfig.Value.Navigation;
@@ -27,7 +25,7 @@ public class LinkLoader(
         }
 
         var query = new QueryBuilder<NavigationContent>()
-            .ContentTypeIs(NavigationContentType)
+            .ContentTypeIs(ContentTypes.Navigation)
             .FieldEquals(content => content.Slug, navigationSlug)
             .Include(2);
 

@@ -9,8 +9,6 @@ public class BlogPostLoader(
     IMemoryCache cache
 ) : IBlogPostLoader
 {
-    private const string BlogPostContentType = "blogpost";
-
     private readonly string _orderNewestFirst = SortOrderBuilder<BlogPostContent>
         .New(content => content.PublishedAt, SortOrder.Reversed)
         .Build();
@@ -29,16 +27,16 @@ public class BlogPostLoader(
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(BlogPostContentType)
+            .ContentTypeIs(ContentTypes.BlogPost)
             .FieldEquals(content => content.Slug, slug)
             .Include(2);
 
         try
         {
-            var blogPosts = await contentDeliveryClient
-                .GetEntries(query);
+            var blogPost = (await contentDeliveryClient
+                    .GetEntries(query))
+                .FirstOrDefault();
 
-            var blogPost = blogPosts.FirstOrDefault();
             if (blogPost == null)
             {
                 return null;
@@ -69,25 +67,28 @@ public class BlogPostLoader(
             return cachedSlug;
         }
 
-        string slug;
+        var query = new QueryBuilder<BlogPostContent>()
+            .ContentTypeIs(ContentTypes.BlogPost)
+            .FieldEquals(content => content.Sys.Id, id);
 
         try
         {
-            slug = (await contentDeliveryClient
-                    .GetEntry<BlogPostContent>(id))
+            var slug = (await contentDeliveryClient
+                    .GetEntries(query))
+                .FirstOrDefault()?
                 .Slug;
+
+            if (!string.IsNullOrWhiteSpace(slug))
+            {
+                cache.Set(cacheKey, slug);
+            }
+
+            return slug;
         }
         catch (ContentfulException)
         {
             return null;
         }
-
-        if (!string.IsNullOrWhiteSpace(slug))
-        {
-            cache.Set(cacheKey, slug);
-        }
-
-        return slug;
     }
 
     public async Task<IEnumerable<BlogPostContent>> Get(int take = 0)
@@ -99,7 +100,7 @@ public class BlogPostLoader(
         }
 
         var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(BlogPostContentType)
+            .ContentTypeIs(ContentTypes.BlogPost)
             .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
             .Include(4)
             .OrderBy(_orderNewestFirst);
@@ -120,7 +121,6 @@ public class BlogPostLoader(
         }
         catch (ContentfulException)
         {
-            // Cannot access Contentful
             return [];
         }
     }
