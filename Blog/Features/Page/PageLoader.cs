@@ -1,4 +1,5 @@
 using Contentful.Core.Errors;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.Page;
 
@@ -27,11 +28,13 @@ public class PageLoader : IPageLoader
     //private IContentfulManagementClient _contentManagementClient;
 
     private readonly IRichTextRenderer _richTextRenderer;
+    private readonly IMemoryCache _cache;
 
     public PageLoader(
         IOptions<ContentfulConfig> contentfulConfig,
         IContentfulClient contentDeliveryClient,
-        IRichTextRenderer richTextRenderer
+        IRichTextRenderer richTextRenderer,
+        IMemoryCache cache
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -42,6 +45,7 @@ public class PageLoader : IPageLoader
         _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
         _richTextRenderer = richTextRenderer;
+        _cache = cache;
     }
 
     public async Task<PageContent> Get(string slug)
@@ -49,6 +53,11 @@ public class PageLoader : IPageLoader
         if (string.IsNullOrWhiteSpace(slug))
         {
             return null;
+        }
+
+        if (_cache.TryGetValue(slug, out PageContent cachedPage))
+        {
+            return cachedPage;
         }
 
         var query = new QueryBuilder<PageContent>()
@@ -71,6 +80,9 @@ public class PageLoader : IPageLoader
             }
 
             page.BodyString = _richTextRenderer.BodyToHtml(page);
+
+            _cache.Set(slug, page);
+
             return page;
         }
         catch (ContentfulException)

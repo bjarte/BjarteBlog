@@ -16,6 +16,10 @@ builder.Services.AddRazorPages();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddContentful(builder.Configuration);
 builder.Services.AddLocalization();
+builder.Services.AddMemoryCache(options =>
+{
+    options.ExpirationScanFrequency = TimeSpan.FromDays(1);
+});
 
 var app = builder.Build();
 
