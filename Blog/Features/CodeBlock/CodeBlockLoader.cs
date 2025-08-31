@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.CodeBlock;
 
@@ -21,7 +21,7 @@ public class CodeBlockLoader(
         }
 
         var query = new QueryBuilder<CodeBlockContent>()
-            .ContentTypeIs("codeBlock")
+            .ContentTypeIs(ContentTypes.CodeBlock)
             .FieldEquals(codeBlock => codeBlock.Slug, id);
 
         var codeBlock = (await contentDeliveryClient

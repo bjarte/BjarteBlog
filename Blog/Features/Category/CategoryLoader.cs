@@ -8,8 +8,6 @@ public class CategoryLoader(
     IMemoryCache cache
 ) : ICategoryLoader
 {
-    private const string CategoryContentType = "category";
-
     private readonly string _orderAlphabetically = SortOrderBuilder<CategoryContent>
         .New(content => content.Title)
         .Build();
@@ -28,7 +26,7 @@ public class CategoryLoader(
         }
 
         var query = new QueryBuilder<CategoryContent>()
-            .ContentTypeIs(CategoryContentType)
+            .ContentTypeIs(ContentTypes.Category)
             .FieldEquals(content => content.Slug, slug);
 
         try

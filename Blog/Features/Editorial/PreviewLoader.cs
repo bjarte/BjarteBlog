@@ -2,8 +2,9 @@ namespace Blog.Features.Editorial;
 
 public class PreviewLoader : IPreviewLoader
 {
-    private const string BlogPostContentType = "blogpost";
-
+    // The Preview API is for previewing unpublished content as though
+    // it were published. It maintains the same behaviour and parameters
+    // as the CDA, but delivers the latest draft for entries and assets.
     private readonly ContentfulClient _previewClient;
     private readonly IRichTextRenderer _richTextRenderer;
 
@@ -25,8 +26,22 @@ public class PreviewLoader : IPreviewLoader
             return null;
         }
 
+        string contentType;
+        if (typeof(T) == typeof(BlogPostContent))
+        {
+            contentType = ContentTypes.BlogPost;
+        }
+        else if (typeof(T) == typeof(PageContent))
+        {
+            contentType = ContentTypes.Page;
+        }
+        else
+        {
+            throw new NotSupportedException($"Content type {typeof(T).Name} is not supported for preview.");
+        }
+
         var query = new QueryBuilder<T>()
-            .ContentTypeIs(BlogPostContentType)
+            .ContentTypeIs(contentType)
             .FieldEquals(content => content.Sys.Id, id)
             .Include(2);
 

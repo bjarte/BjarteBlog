@@ -61,7 +61,7 @@ public class PageLoader : IPageLoader
         }
 
         var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(PageContentType)
+            .ContentTypeIs(ContentTypes.Page)
             .FieldEquals(content => content.Slug, slug)
             // How many levels of references do we need? Default is 1,
             // the Page object itself. Set this to 2 to include the
