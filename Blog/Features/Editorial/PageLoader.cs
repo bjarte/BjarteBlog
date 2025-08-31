@@ -1,7 +1,7 @@
 using Contentful.Core.Errors;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Blog.Features.Page;
+namespace Blog.Features.Editorial;
 
 public class PageLoader : IPageLoader
 {
@@ -104,15 +104,18 @@ public class PageLoader : IPageLoader
             return cachedSlug;
         }
 
-        var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
-            .Include(1);
+        string slug;
 
-        var slug = (await _contentDeliveryClient
-                .GetEntries(query))
-            .FirstOrDefault()?
-            .Slug;
+        try
+        {
+            slug = (await _contentDeliveryClient
+                    .GetEntry<PageContent>(id))
+                .Slug;
+        }
+        catch (ContentfulException)
+        {
+            return null;
+        }
 
         if (!string.IsNullOrWhiteSpace(slug))
         {
@@ -120,31 +123,5 @@ public class PageLoader : IPageLoader
         }
 
         return slug;
-    }
-
-    public async Task<PageContent> GetPreview(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            return null;
-        }
-
-        var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
-            .Include(2);
-
-        var page = (await _previewClient
-                .GetEntries(query))
-            .FirstOrDefault();
-
-        if (page == null)
-        {
-            return null;
-        }
-
-        page.BodyString = _richTextRenderer.BodyToHtml(page);
-
-        return page;
     }
 }

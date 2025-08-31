@@ -2,6 +2,7 @@
 
 public class PageModel(
     IPageLoader pageLoader,
+    IPreviewLoader previewLoader,
     INavigationOrchestrator navigationOrchestrator)
     : BasePageModel
 {
@@ -15,8 +16,8 @@ public class PageModel(
         Navigation = await navigationOrchestrator.Get();
 
         var pageContent = preview
-            ? pageLoader
-                .GetPreview(id)
+            ? previewLoader
+                .GetPreview<PageContent>(id)
                 .Result
             : pageLoader
                 .Get(id)

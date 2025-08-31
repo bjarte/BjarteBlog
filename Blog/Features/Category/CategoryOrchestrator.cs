@@ -17,7 +17,7 @@ public class CategoryOrchestrator(IBlogPostLoader blogPostLoader, ICategoryLoade
 
         return categoryContent == null
             ? []
-            : [new(categoryContent)];
+            : [new CategoryViewModel(categoryContent)];
     }
 
     public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string categoryId)

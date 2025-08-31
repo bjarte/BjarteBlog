@@ -2,5 +2,5 @@
 
 public interface IRichTextRenderer
 {
-    string BodyToHtml(IHasBody content);
+    string BodyToHtml(EditorialContent content);
 }

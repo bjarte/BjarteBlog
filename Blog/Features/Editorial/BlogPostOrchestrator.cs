@@ -1,6 +1,10 @@
-﻿namespace Blog.Features.BlogPost;
+﻿namespace Blog.Features.Editorial;
 
-public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pageLoader) : IBlogPostOrchestrator
+public class BlogPostOrchestrator(
+    IBlogPostLoader blogPostLoader,
+    IPageLoader pageLoader,
+    IPreviewLoader previewLoader
+) : IBlogPostOrchestrator
 {
     public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string id, bool preview)
     {
@@ -14,8 +18,8 @@ public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pa
         }
 
         var blogPostContent = preview
-            ? await blogPostLoader
-                .GetPreview(id)
+            ? await previewLoader
+                .GetPreview<BlogPostContent>(id)
             : await blogPostLoader
                 .Get(id);
 
