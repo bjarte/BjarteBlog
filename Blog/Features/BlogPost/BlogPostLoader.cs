@@ -92,10 +92,10 @@ public class BlogPostLoader : IBlogPostLoader
             .FieldEquals(content => content.Sys.Id, id)
             .Include(1);
 
-        var pages = await _contentDeliveryClient
-            .GetEntries(query);
-
-        var slug = pages.FirstOrDefault()?.Slug;
+        var slug = (await _contentDeliveryClient
+                .GetEntries(query))
+            .FirstOrDefault()?
+            .Slug;
 
         if (!string.IsNullOrWhiteSpace(slug))
         {
