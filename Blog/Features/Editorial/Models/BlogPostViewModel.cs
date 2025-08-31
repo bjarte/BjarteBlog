@@ -1,4 +1,4 @@
-﻿namespace Blog.Features.BlogPost.Models;
+﻿namespace Blog.Features.Editorial.Models;
 
 public class BlogPostViewModel : BasePageViewModel
 {

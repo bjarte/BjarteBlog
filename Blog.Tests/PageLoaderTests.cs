@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Blog.Features.Contentful;
-using Blog.Features.Page;
-using Blog.Features.Page.Models;
+using Blog.Features.Editorial;
+using Blog.Features.Editorial.Models;
 using Blog.Features.Renderers;
 using Contentful.Core;
 using Contentful.Core.Models;
@@ -22,11 +22,12 @@ public class PageLoaderTests
     {
         // Arrange
         const string slug = "test-slug";
+        var cacheKey = $"contentful_page_{slug}";
         var page = new PageContent { Slug = slug, Title = "Cached" };
 
         var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-        memoryCache.Set(slug, page, new MemoryCacheEntryOptions
+        memoryCache.Set(cacheKey, page, new MemoryCacheEntryOptions
         {
             SlidingExpiration = TimeSpan.FromMinutes(10)
         });

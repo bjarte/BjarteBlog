@@ -1,12 +1,16 @@
 using Contentful.Core.Errors;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.Navigation;
 
 public class LinkLoader(
     IOptions<ContentfulConfig> contentfulConfig,
-    IContentfulClient contentDeliveryClient
+    IContentfulClient contentDeliveryClient,
+    IMemoryCache cache
 ) : ILinkLoader
 {
+    private const string NavigationContentType = "navigation";
+
     public async Task<IEnumerable<LinkContent>> Get()
     {
         var navigationSlug = contentfulConfig.Value.Navigation;
@@ -16,17 +20,32 @@ public class LinkLoader(
             return null;
         }
 
+        var cacheKey = $"contentful_navigation_links_{navigationSlug}";
+        if (cache.TryGetValue(cacheKey, out IEnumerable<LinkContent> cachedLinks))
+        {
+            return cachedLinks;
+        }
+
         var query = new QueryBuilder<NavigationContent>()
-            .ContentTypeIs("navigation")
+            .ContentTypeIs(NavigationContentType)
             .FieldEquals(content => content.Slug, navigationSlug)
             .Include(2);
 
         try
         {
-            var navigations = await contentDeliveryClient
-                .GetEntries(query);
+            var links = (await contentDeliveryClient
+                    .GetEntries(query))?
+                .FirstOrDefault()?
+                .Links;
 
-            return navigations?.FirstOrDefault()?.Links;
+            if (links == null)
+            {
+                return [];
+            }
+
+            cache.Set(cacheKey, links);
+
+            return links;
         }
         catch (ContentfulException)
         {

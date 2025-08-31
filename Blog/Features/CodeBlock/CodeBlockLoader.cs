@@ -1,21 +1,40 @@
+﻿using Microsoft.Extensions.Caching.Memory;
+
 namespace Blog.Features.CodeBlock;
 
-public class CodeBlockLoader(IContentfulClient contentDeliveryClient) : ICodeBlockLoader
+public class CodeBlockLoader(
+    IContentfulClient contentDeliveryClient,
+    IMemoryCache cache
+) : ICodeBlockLoader
 {
-    public async Task<CodeBlockContent> Get(string slug)
+    public async Task<CodeBlockContent> Get(string id)
     {
-        if (string.IsNullOrWhiteSpace(slug))
+        if (string.IsNullOrWhiteSpace(id))
         {
             return null;
         }
 
+        var cacheKey = $"contentful_codeblock_id_{id}";
+        if (cache.TryGetValue(cacheKey, out CodeBlockContent cachedCodeBlock))
+        {
+            return cachedCodeBlock;
+        }
+
         var query = new QueryBuilder<CodeBlockContent>()
             .ContentTypeIs("codeBlock")
-            .FieldEquals(_ => _.Slug, slug);
+            .FieldEquals(codeBlock => codeBlock.Slug, id);
 
-        var entries = await contentDeliveryClient
-            .GetEntries(query);
+        var codeBlock = (await contentDeliveryClient
+                .GetEntries(query))
+            .FirstOrDefault();
 
-        return entries.FirstOrDefault();
+        if (codeBlock == null)
+        {
+            return null;
+        }
+
+        cache.Set(cacheKey, codeBlock);
+
+        return codeBlock;
     }
 }

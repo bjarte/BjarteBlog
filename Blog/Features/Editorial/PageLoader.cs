@@ -1,7 +1,7 @@
 using Contentful.Core.Errors;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Blog.Features.Page;
+namespace Blog.Features.Editorial;
 
 public class PageLoader : IPageLoader
 {
@@ -41,7 +41,6 @@ public class PageLoader : IPageLoader
 
         var contentfulOptions = contentfulConfig.Value.ToContentfulOptions();
         contentfulOptions.UsePreviewApi = true;
-
         _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
         _richTextRenderer = richTextRenderer;
@@ -55,7 +54,8 @@ public class PageLoader : IPageLoader
             return null;
         }
 
-        if (_cache.TryGetValue(slug, out PageContent cachedPage))
+        var cacheKey = $"contentful_page_{slug}";
+        if (_cache.TryGetValue(cacheKey, out PageContent cachedPage))
         {
             return cachedPage;
         }
@@ -70,10 +70,10 @@ public class PageLoader : IPageLoader
 
         try
         {
-            var pages = await _contentDeliveryClient
-                .GetEntries(query);
+            var page = (await _contentDeliveryClient
+                    .GetEntries(query))
+                .FirstOrDefault();
 
-            var page = pages.FirstOrDefault();
             if (page == null)
             {
                 return null;
@@ -81,7 +81,7 @@ public class PageLoader : IPageLoader
 
             page.BodyString = _richTextRenderer.BodyToHtml(page);
 
-            _cache.Set(slug, page);
+            _cache.Set(cacheKey, page);
 
             return page;
         }
@@ -98,39 +98,30 @@ public class PageLoader : IPageLoader
             return null;
         }
 
-        var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
-            .Include(1);
+        var cacheKey = $"contentful_page_slug_{id}";
+        if (_cache.TryGetValue(cacheKey, out string cachedSlug))
+        {
+            return cachedSlug;
+        }
 
-        var pages = await _contentDeliveryClient
-            .GetEntries(query);
+        string slug;
 
-        return pages.FirstOrDefault()?.Slug;
-    }
-
-    public async Task<PageContent> GetPreview(string id)
-    {
-        if (string.IsNullOrEmpty(id))
+        try
+        {
+            slug = (await _contentDeliveryClient
+                    .GetEntry<PageContent>(id))
+                .Slug;
+        }
+        catch (ContentfulException)
         {
             return null;
         }
 
-        var query = new QueryBuilder<PageContent>()
-            .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
-            .Include(2);
-
-        var pages = await _previewClient
-            .GetEntries(query);
-
-        var page = pages.FirstOrDefault();
-        if (page == null)
+        if (!string.IsNullOrWhiteSpace(slug))
         {
-            return null;
+            _cache.Set(cacheKey, slug);
         }
 
-        page.BodyString = _richTextRenderer.BodyToHtml(page);
-        return page;
+        return slug;
     }
 }

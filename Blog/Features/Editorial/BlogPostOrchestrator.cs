@@ -1,21 +1,25 @@
-﻿namespace Blog.Features.BlogPost;
+﻿namespace Blog.Features.Editorial;
 
-public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pageLoader) : IBlogPostOrchestrator
+public class BlogPostOrchestrator(
+    IBlogPostLoader blogPostLoader,
+    IPageLoader pageLoader,
+    IPreviewLoader previewLoader
+) : IBlogPostOrchestrator
 {
     public async Task<IEnumerable<BlogPostViewModel>> GetBlogPosts(string id, bool preview)
     {
         if (string.IsNullOrEmpty(id))
         {
             var blogPosts = await blogPostLoader
-                .Get(0);
+                .Get();
 
             return blogPosts
                 .Select(content => new BlogPostViewModel(content));
         }
 
         var blogPostContent = preview
-            ? await blogPostLoader
-                .GetPreview(id)
+            ? await previewLoader
+                .GetPreview<BlogPostContent>(id)
             : await blogPostLoader
                 .Get(id);
 

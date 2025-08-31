@@ -2,5 +2,5 @@
 
 public interface ICodeBlockLoader
 {
-    Task<CodeBlockContent> Get(string slug);
+    Task<CodeBlockContent> Get(string id);
 }

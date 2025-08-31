@@ -1,7 +1,10 @@
-﻿namespace Blog.Features.Renderers;
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace Blog.Features.Renderers;
 
 public class CodeBlockContentRenderer(
-    IContentfulClient contentDeliveryClient
+    ICodeBlockLoader codeBlockLoader,
+    IMemoryCache cache
 ) : ICodeBlockContentRenderer
 {
     public int Order { get; set; } = 20;
@@ -29,8 +32,7 @@ public class CodeBlockContentRenderer(
         var id = "x"; //customNode.JObject["$id"]   //["$id"].Value //.Value<string>("$id");
         try
         {
-            codeBlockContent = await contentDeliveryClient
-                .GetEntry<CodeBlockContent>(id);
+            codeBlockContent = await codeBlockLoader.Get(id);
         }
         catch (Exception)
         {

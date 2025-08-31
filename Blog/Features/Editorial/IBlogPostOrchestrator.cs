@@ -1,4 +1,4 @@
-﻿namespace Blog.Features.BlogPost;
+﻿namespace Blog.Features.Editorial;
 
 public interface IBlogPostOrchestrator
 {

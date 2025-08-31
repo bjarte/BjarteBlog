@@ -2,7 +2,7 @@
 
 namespace Blog.Features.Navigation.Models;
 
-public class LinkContent : ContentfulContent
+public class LinkContent : IContent
 {
     public string Title { get; set; }
     public Reference InternalLink { get; set; }

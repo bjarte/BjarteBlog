@@ -1,6 +1,6 @@
 trigger:
 - main
-# - feature/*
+- feature/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -8,10 +8,10 @@ pool:
 steps:
 
 - task: UseDotNet@2
-  displayName: 'Install .NET 10 SDK'
+  displayName: 'Install .NET 9 SDK'
   inputs:
     packageType: 'sdk'
-    version: '10.x'
+    version: '9.x'
     includePreviewVersions: true
 
 - task: DotNetCoreCLI@2

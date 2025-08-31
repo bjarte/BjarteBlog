@@ -1,20 +1,18 @@
 using Contentful.Core.Errors;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.Category;
 
-public class CategoryLoader : ICategoryLoader
+public class CategoryLoader(
+    IContentfulClient contentDeliveryClient,
+    IMemoryCache cache
+) : ICategoryLoader
 {
-    private readonly IContentfulClient _contentDeliveryClient;
-    private readonly string _orderAlphabetically;
+    private const string CategoryContentType = "category";
 
-    public CategoryLoader(IContentfulClient contentDeliveryClient)
-    {
-        _contentDeliveryClient = contentDeliveryClient;
-
-        _orderAlphabetically = SortOrderBuilder<CategoryContent>
-            .New(content => content.Title)
-            .Build();
-    }
+    private readonly string _orderAlphabetically = SortOrderBuilder<CategoryContent>
+        .New(content => content.Title)
+        .Build();
 
     public async Task<CategoryContent> Get(string slug)
     {
@@ -23,16 +21,30 @@ public class CategoryLoader : ICategoryLoader
             return null;
         }
 
+        var cacheKey = $"contentful_category_{slug}";
+        if (cache.TryGetValue(cacheKey, out CategoryContent cachedCategory))
+        {
+            return cachedCategory;
+        }
+
         var query = new QueryBuilder<CategoryContent>()
-            .ContentTypeIs("category")
+            .ContentTypeIs(CategoryContentType)
             .FieldEquals(content => content.Slug, slug);
 
         try
         {
-            var categories = await _contentDeliveryClient
-                .GetEntries(query);
+            var category = (await contentDeliveryClient
+                    .GetEntries(query))?
+                .FirstOrDefault();
 
-            return categories.FirstOrDefault();
+            if (category == null)
+            {
+                return null;
+            }
+
+            cache.Set(cacheKey, category);
+
+            return category;
         }
         catch (ContentfulException)
         {
@@ -42,6 +54,12 @@ public class CategoryLoader : ICategoryLoader
 
     public async Task<IEnumerable<CategoryContent>> Get()
     {
+        const string cacheKey = "contentful_all_categories";
+        if (cache.TryGetValue(cacheKey, out IEnumerable<CategoryContent> cachedCategories))
+        {
+            return cachedCategories;
+        }
+
         var query = new QueryBuilder<CategoryContent>()
             .ContentTypeIs("category")
             .Include(1)
@@ -49,8 +67,17 @@ public class CategoryLoader : ICategoryLoader
 
         try
         {
-            return await _contentDeliveryClient
-                .GetEntries(query); ;
+            var categories = await contentDeliveryClient
+                .GetEntries(query);
+
+            if (categories == null)
+            {
+                return [];
+            }
+
+            cache.Set(cacheKey, categories);
+
+            return categories;
         }
         catch (ContentfulException)
         {
