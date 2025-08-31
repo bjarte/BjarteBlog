@@ -7,7 +7,7 @@ public class BlogPostOrchestrator(IBlogPostLoader blogPostLoader, IPageLoader pa
         if (string.IsNullOrEmpty(id))
         {
             var blogPosts = await blogPostLoader
-                .Get(0);
+                .Get();
 
             return blogPosts
                 .Select(content => new BlogPostViewModel(content));

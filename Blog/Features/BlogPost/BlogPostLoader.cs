@@ -1,4 +1,5 @@
 using Contentful.Core.Errors;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.BlogPost;
 
@@ -9,12 +10,17 @@ public class BlogPostLoader : IBlogPostLoader
     private readonly IContentfulClient _contentDeliveryClient;
     private readonly ContentfulClient _previewClient;
     private readonly IRichTextRenderer _richTextRenderer;
-    private readonly string _orderNewestFirst;
+    private readonly IMemoryCache _cache;
+
+    private readonly string _orderNewestFirst = SortOrderBuilder<BlogPostContent>
+        .New(content => content.PublishedAt, SortOrder.Reversed)
+        .Build();
 
     public BlogPostLoader(
         IOptions<ContentfulConfig> contentfulConfig,
         IContentfulClient contentDeliveryClient,
-        IRichTextRenderer richTextRenderer
+        IRichTextRenderer richTextRenderer,
+        IMemoryCache cache
     )
     {
         _contentDeliveryClient = contentDeliveryClient;
@@ -23,11 +29,8 @@ public class BlogPostLoader : IBlogPostLoader
         contentfulOptions.UsePreviewApi = true;
         _previewClient = new ContentfulClient(new HttpClient(), contentfulOptions);
 
-        _orderNewestFirst = SortOrderBuilder<BlogPostContent>
-            .New(content => content.PublishedAt, SortOrder.Reversed)
-            .Build();
-
         _richTextRenderer = richTextRenderer;
+        _cache = cache;
     }
 
     public async Task<BlogPostContent> Get(string slug)
@@ -35,6 +38,12 @@ public class BlogPostLoader : IBlogPostLoader
         if (string.IsNullOrWhiteSpace(slug))
         {
             return null;
+        }
+
+        var cacheKey = $"contentful_blogpost_{slug}";
+        if (_cache.TryGetValue(cacheKey, out BlogPostContent cachedBlogPost))
+        {
+            return cachedBlogPost;
         }
 
         var query = new QueryBuilder<BlogPostContent>()
@@ -46,6 +55,7 @@ public class BlogPostLoader : IBlogPostLoader
         {
             var blogPosts = await _contentDeliveryClient
                 .GetEntries(query);
+
             var blogPost = blogPosts.FirstOrDefault();
             if (blogPost == null)
             {
@@ -53,6 +63,9 @@ public class BlogPostLoader : IBlogPostLoader
             }
 
             blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
+
+            _cache.Set(cacheKey, blogPost);
+
             return blogPost;
         }
         catch (ContentfulException)
@@ -68,6 +81,12 @@ public class BlogPostLoader : IBlogPostLoader
             return null;
         }
 
+        var cacheKey = $"contentful_blogpost_slug_{id}";
+        if (_cache.TryGetValue(cacheKey, out string cachedSlug))
+        {
+            return cachedSlug;
+        }
+
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
             .FieldEquals(content => content.Sys.Id, id)
@@ -76,7 +95,14 @@ public class BlogPostLoader : IBlogPostLoader
         var pages = await _contentDeliveryClient
             .GetEntries(query);
 
-        return pages.FirstOrDefault()?.Slug;
+        var slug = pages.FirstOrDefault()?.Slug;
+
+        if (!string.IsNullOrWhiteSpace(slug))
+        {
+            _cache.Set(cacheKey, slug);
+        }
+
+        return slug;
     }
 
     public async Task<BlogPostContent> GetPreview(string id)
@@ -101,11 +127,18 @@ public class BlogPostLoader : IBlogPostLoader
         }
 
         blogPost.BodyString = _richTextRenderer.BodyToHtml(blogPost);
+
         return blogPost;
     }
 
     public async Task<IEnumerable<BlogPostContent>> Get(int take = 0)
     {
+        var cacheKey = $"contentful_all_blogposts_{take}";
+        if (_cache.TryGetValue(cacheKey, out IEnumerable<BlogPostContent> cachedBlogPosts))
+        {
+            return cachedBlogPosts;
+        }
+
         var query = new QueryBuilder<BlogPostContent>()
             .ContentTypeIs(BlogPostContentType)
             .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
@@ -119,8 +152,12 @@ public class BlogPostLoader : IBlogPostLoader
 
         try
         {
-            return await _contentDeliveryClient
+            var blogPosts = await _contentDeliveryClient
                 .GetEntries(query);
+
+            _cache.Set(cacheKey, blogPosts);
+
+            return blogPosts;
         }
         catch (ContentfulException)
         {
@@ -136,28 +173,25 @@ public class BlogPostLoader : IBlogPostLoader
             return [];
         }
 
-        var query = new QueryBuilder<BlogPostContent>()
-            .ContentTypeIs(BlogPostContentType)
-            .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
-            .OrderBy(_orderNewestFirst);
-
-        try
+        var cacheKey = $"contentful_blogposts_with_category_{categorySlug}";
+        if (_cache.TryGetValue(cacheKey, out IEnumerable<BlogPostContent> cachedBlogPosts))
         {
-            var blogPosts = await _contentDeliveryClient
-                .GetEntries(query);
+            return cachedBlogPosts;
+        }
 
-            return blogPosts
-                .Where(blogPost => blogPost.Categories != null
-                                   && blogPost
-                                       .Categories
-                                       .Select(categoryContent => categoryContent.Slug)
-                                       .Contains(categorySlug)
-                );
-            ;
-        }
-        catch (ContentfulException)
-        {
-            return [];
-        }
+        var blogPosts = await Get();
+
+        var blogPostsWithCategory = blogPosts
+            .Where(blogPost => blogPost.Categories != null
+                               && blogPost
+                                   .Categories
+                                   .Select(categoryContent => categoryContent.Slug)
+                                   .Contains(categorySlug)
+            )
+            .ToList();
+
+        _cache.Set(cacheKey, blogPostsWithCategory);
+
+        return blogPostsWithCategory;
     }
 }
