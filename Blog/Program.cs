@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddDependencies();
 builder.Services.AddAppsettings();
-builder.Services.AddOutputCaching();
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -33,7 +32,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-    app.UseOutputCaching();
 }
 else
 {

@@ -5,16 +5,9 @@ public class BlogPostModel(IBlogPostOrchestrator blogPostOrchestrator, INavigati
     public string Id { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public async Task<IActionResult> OnGet(string id, bool preview = false, bool disableCache = false)
+    public async Task<IActionResult> OnGet(string id, bool preview = false)
     {
         Id = id;
-
-        if (!preview && !disableCache)
-        {
-            HttpContext.EnableOutputCaching(
-                TimeSpan.FromMinutes(60),
-                varyByParam: $"{nameof(id)},{nameof(preview)},{nameof(disableCache)}");
-        }
 
         Navigation = await navigationOrchestrator.Get();
 

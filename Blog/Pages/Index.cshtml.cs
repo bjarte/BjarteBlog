@@ -9,7 +9,6 @@ public partial class IndexModel(
     public PageViewModel Author { get; set; }
 
     public async Task<IActionResult> OnGet(
-        bool disableCache = false, 
         string param1 = null, 
         string param2 = null, 
         string param3 = null, 
@@ -36,13 +35,6 @@ public partial class IndexModel(
             {
                 id = param3
             });
-        }
-
-        if (!disableCache)
-        {
-            HttpContext.EnableOutputCaching(
-                TimeSpan.FromMinutes(60),
-                varyByParam: nameof(disableCache));
         }
 
         Navigation = await navigationOrchestrator.Get();

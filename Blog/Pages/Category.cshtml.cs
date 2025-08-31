@@ -9,16 +9,9 @@ public class CategoryModel(
     public IEnumerable<CategoryViewModel> Categories { get; set; }
     public IEnumerable<BlogPostViewModel> BlogPosts { get; set; }
 
-    public async Task<IActionResult> OnGet(string id, bool disableCache = false)
+    public async Task<IActionResult> OnGet(string id)
     {
         Id = id;
-
-        if (!disableCache)
-        {
-            HttpContext.EnableOutputCaching(
-                TimeSpan.FromMinutes(60),
-                varyByParam: $"{nameof(id)},{nameof(disableCache)}");
-        }
 
         Navigation = await navigationOrchestrator.Get();
 

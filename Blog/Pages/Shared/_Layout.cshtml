@@ -19,17 +19,14 @@
 
     <div class="container">
         
-        @{
-            var utcNow = DateTime.UtcNow;
-        }
         <environment include="Development">
-            <p style="text-align: center">Environment: Development – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
+            <p style="text-align: center">Environment: Development</p>
         </environment>
         <environment include="Staging">
-            <p style="text-align: center">Environment: Staging – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC</p>
+            <p style="text-align: center">Environment: Staging</p>
         </environment>
         <environment include="Production">
-            <!-- Environment: Production – Page cached: @utcNow.ToString("yyyy-MM-dd HH:mm:ss") UTC -->
+            <!-- Environment: Production -->
         </environment>
 
         <nav>
