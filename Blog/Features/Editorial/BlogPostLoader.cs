@@ -67,25 +67,28 @@ public class BlogPostLoader(
             return cachedSlug;
         }
 
-        string slug;
+        var query = new QueryBuilder<BlogPostContent>()
+            .ContentTypeIs(ContentTypes.BlogPost)
+            .FieldEquals(content => content.Sys.Id, id);
 
         try
         {
-            slug = (await contentDeliveryClient
-                    .GetEntry<BlogPostContent>(id))
+            var slug = (await contentDeliveryClient
+                    .GetEntries(query))
+                .FirstOrDefault()?
                 .Slug;
+
+            if (!string.IsNullOrWhiteSpace(slug))
+            {
+                cache.Set(cacheKey, slug);
+            }
+
+            return slug;
         }
         catch (ContentfulException)
         {
             return null;
         }
-
-        if (!string.IsNullOrWhiteSpace(slug))
-        {
-            cache.Set(cacheKey, slug);
-        }
-
-        return slug;
     }
 
     public async Task<IEnumerable<BlogPostContent>> Get(int take = 0)
