@@ -1,8 +1,10 @@
 ﻿namespace Blog.Features.Renderers;
 
-public class RichTextRenderer(ICodeBlockContentRenderer codeBlockContentRenderer) : IRichTextRenderer
+public class RichTextRenderer(
+    ICodeBlockContentRenderer codeBlockContentRenderer
+) : IRichTextRenderer
 {
-    public string BodyToHtml(IHasBody content)
+    public string BodyToHtml(EditorialContent content)
     {
         if (content?.Body?.Content?.Count > 0 != true)
         {

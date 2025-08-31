@@ -215,3 +215,8 @@ figcaption {
   font-style: italic;
   margin-top: 0;
 }
+
+/* Cusdis comments */
+#cusdis_thread iframe {
+    height: 2000px;
+}

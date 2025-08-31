@@ -17,7 +17,6 @@ public class AdvancedTextRenderer : IContentRenderer
             || string.IsNullOrEmpty(text.Value))
         {
             return Task.FromResult(string.Empty);
-
         }
 
         var html = new StringBuilder();
