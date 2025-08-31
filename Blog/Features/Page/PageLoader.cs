@@ -55,7 +55,8 @@ public class PageLoader : IPageLoader
             return null;
         }
 
-        if (_cache.TryGetValue(slug, out PageContent cachedPage))
+        var cacheKey = $"contentful_page_{slug}";
+        if (_cache.TryGetValue(cacheKey, out PageContent cachedPage))
         {
             return cachedPage;
         }
@@ -81,7 +82,7 @@ public class PageLoader : IPageLoader
 
             page.BodyString = _richTextRenderer.BodyToHtml(page);
 
-            _cache.Set(slug, page);
+            _cache.Set(cacheKey, page);
 
             return page;
         }
@@ -91,34 +92,53 @@ public class PageLoader : IPageLoader
         }
     }
 
-    public async Task<string> GetSlug(string id)
+    public async Task<string> GetSlug(string contentId)
     {
-        if (string.IsNullOrWhiteSpace(id))
+        if (string.IsNullOrWhiteSpace(contentId))
         {
             return null;
         }
 
+        var cacheKey = $"contentful_slug_{contentId}";
+        if (_cache.TryGetValue(cacheKey, out string cachedSlug))
+        {
+            return cachedSlug;
+        }
+
         var query = new QueryBuilder<PageContent>()
             .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, contentId)
             .Include(1);
 
         var pages = await _contentDeliveryClient
             .GetEntries(query);
 
-        return pages.FirstOrDefault()?.Slug;
+        var slug = pages.FirstOrDefault()?.Slug;
+
+        if (!string.IsNullOrWhiteSpace(slug))
+        {
+            _cache.Set(cacheKey, slug);
+        }
+
+        return slug;
     }
 
-    public async Task<PageContent> GetPreview(string id)
+    public async Task<PageContent> GetPreview(string contentId)
     {
-        if (string.IsNullOrEmpty(id))
+        if (string.IsNullOrEmpty(contentId))
         {
             return null;
         }
 
+        var cacheKey = $"contentful_page_preview_{contentId}";
+        if (_cache.TryGetValue(cacheKey, out PageContent cachedPage))
+        {
+            return cachedPage;
+        }
+
         var query = new QueryBuilder<PageContent>()
             .ContentTypeIs(PageContentType)
-            .FieldEquals(content => content.Sys.Id, id)
+            .FieldEquals(content => content.Sys.Id, contentId)
             .Include(2);
 
         var pages = await _previewClient
@@ -131,6 +151,13 @@ public class PageLoader : IPageLoader
         }
 
         page.BodyString = _richTextRenderer.BodyToHtml(page);
+
+        // Set short expiration for preview content
+        _cache.Set(cacheKey, page, new MemoryCacheEntryOptions
+        {
+            SlidingExpiration = TimeSpan.FromSeconds(30)
+        });
+
         return page;
     }
 }

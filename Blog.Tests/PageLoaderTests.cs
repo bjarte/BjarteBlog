@@ -22,11 +22,12 @@ public class PageLoaderTests
     {
         // Arrange
         const string slug = "test-slug";
+        var cacheKey = $"contentful_page_{slug}";
         var page = new PageContent { Slug = slug, Title = "Cached" };
 
         var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-        memoryCache.Set(slug, page, new MemoryCacheEntryOptions
+        memoryCache.Set(cacheKey, page, new MemoryCacheEntryOptions
         {
             SlidingExpiration = TimeSpan.FromMinutes(10)
         });
