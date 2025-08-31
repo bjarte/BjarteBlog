@@ -1,3 +1,4 @@
+﻿using Contentful.Core.Errors;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Blog.Features.CodeBlock;
@@ -24,17 +25,24 @@ public class CodeBlockLoader(
             .ContentTypeIs(ContentTypes.CodeBlock)
             .FieldEquals(codeBlock => codeBlock.Slug, id);
 
-        var codeBlock = (await contentDeliveryClient
-                .GetEntries(query))
-            .FirstOrDefault();
+        try
+        {
+            var codeBlock = (await contentDeliveryClient
+                    .GetEntries(query))
+                .FirstOrDefault();
 
-        if (codeBlock == null)
+            if (codeBlock == null)
+            {
+                return null;
+            }
+
+            cache.Set(cacheKey, codeBlock);
+
+            return codeBlock;
+        }
+        catch (ContentfulException)
         {
             return null;
         }
-
-        cache.Set(cacheKey, codeBlock);
-
-        return codeBlock;
     }
 }
