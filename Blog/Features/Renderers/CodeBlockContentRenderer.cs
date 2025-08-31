@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace Blog.Features.Renderers;
+﻿namespace Blog.Features.Renderers;
 
 public class CodeBlockContentRenderer(
-    ICodeBlockLoader codeBlockLoader,
-    IMemoryCache cache
+    ICodeBlockLoader codeBlockLoader
 ) : ICodeBlockContentRenderer
 {
     public int Order { get; set; } = 20;

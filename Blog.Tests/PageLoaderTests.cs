@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Blog.Features.Contentful;
 using Blog.Features.Editorial;
 using Blog.Features.Editorial.Models;
 using Blog.Features.Renderers;
@@ -9,7 +8,6 @@ using Contentful.Core;
 using Contentful.Core.Models;
 using Contentful.Core.Search;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -22,7 +20,7 @@ public class PageLoaderTests
     {
         // Arrange
         const string slug = "test-slug";
-        var cacheKey = $"contentful_page_{slug}";
+        const string cacheKey = $"contentful_page_{slug}";
         var page = new PageContent { Slug = slug, Title = "Cached" };
 
         var memoryCache = new MemoryCache(new MemoryCacheOptions());
@@ -34,11 +32,8 @@ public class PageLoaderTests
 
         var contentfulClientMock = new Mock<IContentfulClient>();
         var richTextRendererMock = new Mock<IRichTextRenderer>();
-        var optionsMock = new Mock<IOptions<ContentfulConfig>>();
-        optionsMock.Setup(o => o.Value).Returns(new ContentfulConfig());
 
         var loader = new PageLoader(
-            optionsMock.Object,
             contentfulClientMock.Object,
             richTextRendererMock.Object,
             memoryCache
@@ -68,11 +63,7 @@ public class PageLoaderTests
         var richTextRendererMock = new Mock<IRichTextRenderer>();
         richTextRendererMock.Setup(r => r.BodyToHtml(page)).Returns("html");
 
-        var optionsMock = new Mock<IOptions<ContentfulConfig>>();
-        optionsMock.Setup(o => o.Value).Returns(new ContentfulConfig());
-
         var loader = new PageLoader(
-            optionsMock.Object,
             contentfulClientMock.Object,
             richTextRendererMock.Object,
             memoryCache
