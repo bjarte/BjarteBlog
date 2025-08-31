@@ -26,4 +26,3 @@ global using Contentful.Core.Search;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
-global using WebEssentials.AspNetCore.OutputCaching;

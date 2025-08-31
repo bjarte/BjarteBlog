@@ -1,6 +1,4 @@
-﻿using Blog.Features.Caching;
-
-namespace Blog.Features.Initialization;
+﻿namespace Blog.Features.Initialization;
 
 public static class AppsettingsSetup
 {
@@ -8,9 +6,6 @@ public static class AppsettingsSetup
     {
         services.AddOptions<ContentfulConfig>()
             .BindConfiguration("ContentfulOptions");
-
-        services.AddOptions<OutputCacheConfig>()
-            .BindConfiguration("OutputCacheOptions");
 
         return services;
     }

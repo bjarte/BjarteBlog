@@ -11,12 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddDependencies();
 builder.Services.AddAppsettings();
-builder.Services.AddOutputCaching();
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddContentful(builder.Configuration);
 builder.Services.AddLocalization();
+builder.Services.AddMemoryCache(options =>
+{
+    options.ExpirationScanFrequency = TimeSpan.FromDays(1);
+});
 
 var app = builder.Build();
 
@@ -33,7 +36,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-    app.UseOutputCaching();
 }
 else
 {
