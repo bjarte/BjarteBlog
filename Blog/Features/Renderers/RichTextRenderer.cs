@@ -6,7 +6,7 @@ public class RichTextRenderer(
 {
     public string BodyToHtml(EditorialContent content)
     {
-        if (content?.Body?.Content?.Count > 0 != true)
+        if (!(content?.Body?.Content?.Count > 0))
         {
             return string.Empty;
         }
