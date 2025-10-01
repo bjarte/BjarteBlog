@@ -10,8 +10,7 @@ public class PreviewLoader : IPreviewLoader
 
     public PreviewLoader(
         IOptions<ContentfulConfig> contentfulConfig,
-        IRichTextRenderer richTextRenderer
-    )
+        IRichTextRenderer richTextRenderer)
     {
         var contentfulOptions = contentfulConfig.Value.ToContentfulOptions();
         contentfulOptions.UsePreviewApi = true;
