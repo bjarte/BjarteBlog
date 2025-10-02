@@ -1,5 +1,4 @@
 using System.Globalization;
-using Blog.Features.Initialization;
 using Contentful.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
