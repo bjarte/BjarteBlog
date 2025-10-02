@@ -1,6 +1,3 @@
-using Contentful.Core.Errors;
-using Microsoft.Extensions.Caching.Memory;
-
 namespace Blog.Features.Editorial;
 
 // The Content Delivery API (CDA) is a read-only API for

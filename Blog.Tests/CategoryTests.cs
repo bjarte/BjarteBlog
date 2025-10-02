@@ -1,7 +1,4 @@
-﻿using Blog.Features.Category.Models;
-using Xunit;
-
-namespace Blog.Tests;
+﻿namespace Blog.Tests;
 
 public class CategoryTests
 {
