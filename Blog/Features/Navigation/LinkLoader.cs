@@ -38,7 +38,7 @@ public class LinkLoader(
                 return [];
             }
 
-            cache.Set(cacheKey, links);
+            cache.Set(cacheKey, links, MemoryCacheConstants.SlidingExpiration1Day);
 
             return links;
         }

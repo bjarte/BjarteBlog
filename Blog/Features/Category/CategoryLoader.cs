@@ -37,7 +37,7 @@ public class CategoryLoader(
                 return null;
             }
 
-            cache.Set(cacheKey, category);
+            cache.Set(cacheKey, category, MemoryCacheConstants.SlidingExpiration1Day);
 
             return category;
         }
@@ -70,7 +70,7 @@ public class CategoryLoader(
                 return [];
             }
 
-            cache.Set(cacheKey, categories);
+            cache.Set(cacheKey, categories, MemoryCacheConstants.SlidingExpiration1Day);
 
             return categories;
         }

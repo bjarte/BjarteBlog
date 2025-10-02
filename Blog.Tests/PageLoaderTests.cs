@@ -10,12 +10,9 @@ public class PageLoaderTests
         const string cacheKey = $"contentful_page_{slug}";
         var page = new PageContent { Slug = slug, Title = "Cached" };
 
-        var memoryCache = new MemoryCache(new MemoryCacheOptions());
+        var cache = new MemoryCache(new MemoryCacheOptions());
 
-        memoryCache.Set(cacheKey, page, new MemoryCacheEntryOptions
-        {
-            SlidingExpiration = TimeSpan.FromMinutes(10)
-        });
+        cache.Set(cacheKey, page, MemoryCacheConstants.SlidingExpiration1Day);
 
         var contentfulClientMock = new Mock<IContentfulClient>();
         var richTextRendererMock = new Mock<IRichTextRenderer>();
@@ -23,7 +20,7 @@ public class PageLoaderTests
         var loader = new PageLoader(
             contentfulClientMock.Object,
             richTextRendererMock.Object,
-            memoryCache
+            cache
         );
 
         // Act

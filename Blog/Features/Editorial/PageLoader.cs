@@ -44,7 +44,7 @@ public class PageLoader(
 
             page.BodyString = richTextRenderer.BodyToHtml(page);
 
-            cache.Set(cacheKey, page);
+            cache.Set(cacheKey, page, MemoryCacheConstants.SlidingExpiration1Day);
 
             return page;
         }
@@ -78,10 +78,7 @@ public class PageLoader(
                 .FirstOrDefault()?
                 .Slug;
 
-            if (!string.IsNullOrWhiteSpace(slug))
-            {
-                cache.Set(cacheKey, slug);
-            }
+            cache.Set(cacheKey, slug, MemoryCacheConstants.SlidingExpiration1Day);
 
             return slug;
         }

@@ -44,7 +44,7 @@ public class BlogPostLoader(
 
             blogPost.BodyString = richTextRenderer.BodyToHtml(blogPost);
 
-            cache.Set(cacheKey, blogPost);
+            cache.Set(cacheKey, blogPost, MemoryCacheConstants.SlidingExpiration1Day);
 
             return blogPost;
         }
@@ -78,10 +78,7 @@ public class BlogPostLoader(
                 .FirstOrDefault()?
                 .Slug;
 
-            if (!string.IsNullOrWhiteSpace(slug))
-            {
-                cache.Set(cacheKey, slug);
-            }
+            cache.Set(cacheKey, slug, MemoryCacheConstants.SlidingExpiration1Day);
 
             return slug;
         }
@@ -115,7 +112,7 @@ public class BlogPostLoader(
             var blogPosts = await contentDeliveryClient
                 .GetEntries(query);
 
-            cache.Set(cacheKey, blogPosts);
+            cache.Set(cacheKey, blogPosts, MemoryCacheConstants.SlidingExpiration1Day);
 
             return blogPosts;
         }
@@ -149,7 +146,7 @@ public class BlogPostLoader(
             )
             .ToList();
 
-        cache.Set(cacheKey, blogPostsWithCategory);
+        cache.Set(cacheKey, blogPostsWithCategory, MemoryCacheConstants.SlidingExpiration1Day);
 
         return blogPostsWithCategory;
     }

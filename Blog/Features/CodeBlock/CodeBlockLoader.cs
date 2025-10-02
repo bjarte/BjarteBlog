@@ -36,7 +36,7 @@ public class CodeBlockLoader(
                 return null;
             }
 
-            cache.Set(cacheKey, codeBlock);
+            cache.Set(cacheKey, codeBlock, MemoryCacheConstants.SlidingExpiration1Day);
 
             return codeBlock;
         }
