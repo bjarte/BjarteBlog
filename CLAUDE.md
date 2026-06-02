@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal blog (https://basementmedia.no) built as an ASP.NET Core Razor Pages app that pulls all content from **Contentful** (headless CMS). There is no database — Contentful is the single source of truth, fronted by an in-memory cache. Deployed to Azure via Azure DevOps pipeline.
 
-Note: the project targets **net9.0** (the README's "NET 8" is stale).
+Note: the project targets **net10.0**.
 
 ## Commands
 
