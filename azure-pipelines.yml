@@ -27,13 +27,13 @@ steps:
     projects: 'Blog/Blog.csproj'
     command: 'publish'
     configuration: 'Release'
-    arguments: '-o $(System.DefaultWorkingDirectory)'
+    arguments: '-o $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
     modifyOutputPath: true
 
 - task: FileTransform@2
   inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)/Blog.zip'
+    folderPath: '$(Build.ArtifactStagingDirectory)/Blog.zip'
     enableXmlTransform: false
     xmlTransformationRules: ''
     jsonTargetFiles: '**/appsettings.json'
@@ -41,4 +41,5 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: 'Publish package to deploy pipeline'
   inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
