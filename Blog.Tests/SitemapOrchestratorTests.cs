@@ -29,13 +29,14 @@ public class SitemapOrchestratorTests
             new() { Slug = "dotnet", Sys = new SystemProperties { UpdatedAt = new DateTime(2024, 03, 25) } }
         };
 
-        // Returned unordered to prove the orchestrator places about-me first
-        // and sorts the rest alphabetically by title.
-        var pages = new List<PageContent>
+        var aboutMePage = new PageContent
         {
-            new() { Slug = "contact", Title = "Contact", Sys = new SystemProperties { UpdatedAt = new DateTime(2024, 06, 15) } },
-            new() { Slug = PageConstants.AboutMeSlug, Title = "About me", Sys = new SystemProperties { UpdatedAt = new DateTime(2024, 05, 01) } },
-            new() { Slug = "archive", Title = "Archive", Sys = new SystemProperties { UpdatedAt = new DateTime(2024, 06, 01) } }
+            Slug = PageConstants.AboutMeSlug,
+            Title = "About me",
+            Sys = new SystemProperties
+            {
+                UpdatedAt = new DateTime(2024, 05, 01)
+            }
         };
 
         var blogPostLoaderMock = new Mock<IBlogPostLoader>();
@@ -45,7 +46,7 @@ public class SitemapOrchestratorTests
         categoryLoaderMock.Setup(loader => loader.Get()).ReturnsAsync(categories);
 
         var pageLoaderMock = new Mock<IPageLoader>();
-        pageLoaderMock.Setup(loader => loader.Get()).ReturnsAsync(pages);
+        pageLoaderMock.Setup(loader => loader.Get(It.IsAny<string>())).ReturnsAsync(aboutMePage);
 
         var orchestrator = new SitemapOrchestrator(
             blogPostLoaderMock.Object,
@@ -64,9 +65,7 @@ public class SitemapOrchestratorTests
             path => Assert.Equal("/blogpost", path),
             path => Assert.Equal("/category/architecture", path),
             path => Assert.Equal("/category/dotnet", path),
-            path => Assert.Equal("/category", path),
-            path => Assert.Equal("/page/archive", path),
-            path => Assert.Equal("/page/contact", path));
+            path => Assert.Equal("/category", path));
 
         // Home and the /blogpost listing share the newest blog post date.
         Assert.Equal(new DateTime(2024, 03, 15), result[0].LastModified);
@@ -92,8 +91,8 @@ public class SitemapOrchestratorTests
             .ReturnsAsync(new List<CategoryContent> { new() { Slug = null } });
 
         var pageLoaderMock = new Mock<IPageLoader>();
-        pageLoaderMock.Setup(loader => loader.Get())
-            .ReturnsAsync(new List<PageContent>());
+        pageLoaderMock.Setup(loader => loader.Get(It.IsAny<string>()))
+            .ReturnsAsync(new PageContent());
 
         var orchestrator = new SitemapOrchestrator(
             blogPostLoaderMock.Object,

@@ -8,11 +8,9 @@ public class SitemapOrchestrator(
 {
     public async Task<IEnumerable<SitemapUrl>> GetUrls()
     {
-        // Loaders already order their results: blog posts newest first,
-        // categories alphabetically. Pages are unordered here.
         var blogPosts = (await blogPostLoader.Get()).ToList();
         var categories = (await categoryLoader.Get()).ToList();
-        var pages = (await pageLoader.Get()).ToList();
+        var aboutMePage = await pageLoader.Get(PageConstants.AboutMeSlug);
 
         var newestBlogPostDate = blogPosts
             .Select(blogPost => blogPost.PublishedAt ?? blogPost.Sys?.UpdatedAt)
@@ -31,19 +29,15 @@ public class SitemapOrchestrator(
             new() { Path = "/", LastModified = newestBlogPostDate }
         };
 
-        // The about-me page comes first, right after the home page.
-        var aboutMe = pages.FirstOrDefault(page =>
-            string.Equals(page.Slug, PageConstants.AboutMeSlug, StringComparison.OrdinalIgnoreCase));
-        if (aboutMe != null)
+        if (aboutMePage?.Slug != null)
         {
             urls.Add(new SitemapUrl
             {
-                Path = $"/page/{aboutMe.Slug}",
-                LastModified = aboutMe.Sys?.UpdatedAt
+                Path = $"/page/{aboutMePage.Slug}",
+                LastModified = aboutMePage.Sys?.UpdatedAt
             });
         }
 
-        // Blog posts (newest first), then the /blogpost listing page.
         urls.AddRange(blogPosts
             .Where(blogPost => !string.IsNullOrEmpty(blogPost.Slug))
             .Select(blogPost => new SitemapUrl
@@ -62,17 +56,6 @@ public class SitemapOrchestrator(
                 LastModified = category.Sys?.UpdatedAt
             }));
         urls.Add(new SitemapUrl { Path = "/category", LastModified = newestCategoryDate });
-
-        // Remaining pages, alphabetically by title, excluding about-me (added above).
-        urls.AddRange(pages
-            .Where(page => !string.IsNullOrEmpty(page.Slug)
-                           && !string.Equals(page.Slug, PageConstants.AboutMeSlug, StringComparison.OrdinalIgnoreCase))
-            .OrderBy(page => page.Title)
-            .Select(page => new SitemapUrl
-            {
-                Path = $"/page/{page.Slug}",
-                LastModified = page.Sys?.UpdatedAt
-            }));
 
         return urls;
     }
