@@ -1,7 +1,7 @@
 namespace Blog.Features.Sitemap;
 
 [ApiController]
-public class SitemapController(
+public class SitemapApiController(
     IOptions<SitemapConfig> sitemapConfig,
     ISitemapOrchestrator sitemapOrchestrator
     ) : ControllerBase

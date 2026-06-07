@@ -1,18 +1,20 @@
 namespace Blog.Features.Robots;
 
 [ApiController]
-public class RobotsController : ControllerBase
+public class RobotsApiController(
+    IOptions<SitemapConfig> sitemapConfig
+) : ControllerBase
 {
+    private readonly string _baseUrl = sitemapConfig.Value.BaseUrl;
+
     [HttpGet("/robots.txt")]
     public IActionResult Get()
     {
-        var baseUrl = $"{Request.Scheme}://{Request.Host}";
-
         var robots = new StringBuilder()
             .AppendLine("User-agent: *")
             .AppendLine("Allow: /")
             .AppendLine()
-            .AppendLine($"Sitemap: {baseUrl}/sitemap.xml")
+            .AppendLine($"Sitemap: {_baseUrl}/sitemap.xml")
             .ToString();
 
         return Content(robots, "text/plain", Encoding.UTF8);
