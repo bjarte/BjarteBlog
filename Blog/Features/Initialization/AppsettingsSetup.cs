@@ -7,6 +7,9 @@ public static class AppsettingsSetup
         services.AddOptions<ContentfulConfig>()
             .BindConfiguration("ContentfulOptions");
 
+        services.AddOptions<SitemapConfig>()
+            .BindConfiguration("Sitemap");
+
         return services;
     }
 }
