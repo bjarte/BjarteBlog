@@ -30,7 +30,7 @@ public class BlogPostOrchestrator(
 
         var blogPost = new BlogPostViewModel(blogPostContent, true);
 
-        var pageContent = pageLoader.Get("about-me").Result;
+        var pageContent = pageLoader.Get(PageConstants.AboutMeSlug).Result;
         if (pageContent != null)
         {
             blogPost.Author = new PageViewModel(pageContent);

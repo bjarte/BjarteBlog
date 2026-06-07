@@ -54,6 +54,39 @@ public class PageLoader(
         }
     }
 
+    public async Task<IEnumerable<PageContent>> Get()
+    {
+        const string cacheKey = "contentful_all_pages";
+        if (cache.TryGetValue(cacheKey, out IEnumerable<PageContent> cachedPages))
+        {
+            return cachedPages;
+        }
+
+        var query = new QueryBuilder<PageContent>()
+            .ContentTypeIs(ContentTypes.Page)
+            .FieldEquals(content => content.IncludeInSearchAndNavigation, "true")
+            .Include(1);
+
+        try
+        {
+            var pages = await contentDeliveryClient
+                .GetEntries(query);
+
+            if (pages == null)
+            {
+                return [];
+            }
+
+            cache.Set(cacheKey, pages, MemoryCacheConstants.SlidingExpiration1Day);
+
+            return pages;
+        }
+        catch (ContentfulException)
+        {
+            return [];
+        }
+    }
+
     public async Task<string> GetSlug(string id)
     {
         if (string.IsNullOrWhiteSpace(id))

@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddSingleton<INavigationOrchestrator, NavigationOrchestrator>();
         services.AddSingleton<IPageLoader, PageLoader>();
         services.AddSingleton<IPreviewLoader, PreviewLoader>();
+        services.AddSingleton<ISitemapOrchestrator, SitemapOrchestrator>();
 
         services.AddSingleton<ICodeBlockContentRenderer, CodeBlockContentRenderer>();
         services.AddSingleton<IRichTextRenderer, RichTextRenderer>();

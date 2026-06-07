@@ -1,10 +1,16 @@
-﻿global using System.Threading;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading;
 global using System.Threading.Tasks;
+global using Blog.Features.Category;
 global using Blog.Features.Category.Models;
 global using Blog.Features.Editorial;
 global using Blog.Features.Editorial.Models;
 global using Blog.Features.Initialization;
 global using Blog.Features.Renderers;
+global using Blog.Features.Sitemap;
+global using Blog.Features.Sitemap.Models;
 global using Contentful.Core;
 global using Contentful.Core.Models;
 global using Contentful.Core.Search;

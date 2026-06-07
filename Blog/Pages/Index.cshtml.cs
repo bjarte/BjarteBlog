@@ -45,7 +45,7 @@ public partial class IndexModel(
         BlogPosts = blogPosts?
             .Select(content => new BlogPostViewModel(content));
 
-        var author = await pageLoader.Get("about-me");
+        var author = await pageLoader.Get(PageConstants.AboutMeSlug);
 
         Author = new PageViewModel(author);
 
