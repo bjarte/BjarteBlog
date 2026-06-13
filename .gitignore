@@ -1,3 +1,4 @@
+# .NET
 *.suo
 *.user
 *.userprefs
@@ -14,6 +15,16 @@ package-lock\.json
 .vscode/launch.json
 .idea 
 .config/
-Contentful/export-config.json
 
+Contentful/export-config.json
 Contentful/import-config.json
+
+# Sanity
+node_modules/
+dist/
+.sanity/
+
+# Env
+.env
+.env.local
+.env.*.local
