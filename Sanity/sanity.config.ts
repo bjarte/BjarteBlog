@@ -8,7 +8,7 @@ const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 
 export default defineConfig({
   name: 'default',
-  title: 'BjarteBlog',
+  title: 'Basement Media',
 
   projectId,
   dataset,

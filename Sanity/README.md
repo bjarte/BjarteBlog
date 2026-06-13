@@ -1,7 +1,6 @@
-# BjarteBlog — Sanity Studio
+# basementmedia.no — Sanity Studio
 
-A minimal [Sanity](https://www.sanity.io/) Studio for the BjarteBlog content
-(basementmedia.no). This is the authoring UI only — the front-end (.NET app in
+A minimal [Sanity](https://www.sanity.io/) Studio for basementmedia.no. This is the authoring UI only — the front-end (.NET app in
 `../Blog`) will be pointed at Sanity in a later step.
 
 ## Document types
@@ -16,21 +15,12 @@ A minimal [Sanity](https://www.sanity.io/) Studio for the BjarteBlog content
 
 The Studio needs a Sanity project to connect to. After installing dependencies:
 
+Find the Sanity project id at sanity.io. Copy `.env-example` to `.env` and add a valid project id.
+
 ```bash
+# Install pnpm and Sanity globally with Mise
+mise use --global node pnpm npm:sanity
 pnpm install
-
-# Log in and create (or link) a project + dataset:
-npx sanity login
-npx sanity init       # choose "Create new project" (or reuse an existing one),
-                      # dataset name "production"
-```
-
-`sanity init` writes the `projectId`/`dataset` into the CLI config. Alternatively,
-set them via environment variables (read by `sanity.config.ts` / `sanity.cli.ts`):
-
-```bash
-export SANITY_STUDIO_PROJECT_ID=<your-project-id>
-export SANITY_STUDIO_DATASET=production
 ```
 
 ## Commands
@@ -43,7 +33,7 @@ pnpm deploy   # deploy to <project>.sanity.studio
 
 ## Project structure
 
-```
+```text
 sanity.config.ts        Studio config (plugins + schema registration)
 sanity.cli.ts           CLI config (projectId + dataset)
 schemaTypes/
