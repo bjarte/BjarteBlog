@@ -10,8 +10,28 @@ To get a complete dump of the data model (to commit to git), update export-confi
 
 At least you need to enter a valid Management API key.
 
-Export command:
+Export command
 > contentful space export --config .\export-config.json
+
+## How to export, v.2
+
+Instead of adding API management key and space id to a config file, just add them to the command line once.
+
+Install contentful-cli with Mise
+
+> mise use --global npm:contentful-cli
+
+Authenticate and generate API key
+
+> contentful login
+
+Select space to export
+
+> contentful space use
+
+Export to contentful-export.json
+
+> contentful export
 
 ## Import the exported content model to a new space
 
