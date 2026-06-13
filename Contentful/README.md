@@ -4,7 +4,7 @@
 
 > npm install -g contentful-cli
 
-## How to export your current setup
+## How to export your current setup, content model ONLY
 
 To get a complete dump of the data model (to commit to git), update export-config.json with the appropriate settings.
 
@@ -13,7 +13,7 @@ At least you need to enter a valid Management API key.
 Export command
 > contentful space export --config .\export-config.json
 
-## How to export, v.2
+## How to export content models, AND content
 
 Instead of adding API management key and space id to a config file, just add them to the command line once.
 
