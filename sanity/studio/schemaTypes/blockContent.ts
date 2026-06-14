@@ -46,7 +46,10 @@ export const blockContent = defineType({
                 title: 'URL',
                 type: 'url',
                 validation: (Rule) =>
-                  Rule.uri({scheme: ['http', 'https', 'mailto', 'tel']}),
+                  Rule.uri({
+                    scheme: ['http', 'https', 'mailto', 'tel'],
+                    allowRelative: true,
+                  }),
               },
             ],
           },
@@ -63,6 +66,20 @@ export const blockContent = defineType({
           type: 'string',
         },
       ],
+    }),
+    defineArrayMember({
+      type: 'code',
+      options: {
+        withFilename: false,
+        languageAlternatives: [
+          {title: 'C#', value: 'csharp'},
+          {title: 'HTML', value: 'html'},
+          {title: 'JavaScript', value: 'javascript'},
+          {title: 'PHP', value: 'php'},
+          {title: 'PowerShell', value: 'powershell'},
+          {title: 'XML', value: 'xml'},
+        ],
+      },
     }),
   ],
 })

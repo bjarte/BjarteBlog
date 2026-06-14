@@ -1,0 +1,22 @@
+{
+  "name": "basementmedia-migration",
+  "private": true,
+  "version": "1.0.0",
+  "description": "One-off migration of Contentful content into Sanity for basementmedia.no",
+  "type": "module",
+  "scripts": {
+    "migrate": "tsx src/index.ts",
+    "migrate:dry": "tsx src/index.ts --dry-run",
+    "upload-images": "tsx src/uploadImages.ts",
+    "upload-images:dry": "tsx src/uploadImages.ts --dry-run"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.0.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

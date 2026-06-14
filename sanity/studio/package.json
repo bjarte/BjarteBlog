@@ -11,6 +11,7 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
+    "@sanity/code-input": "^6.0.0",
     "@sanity/vision": "^6.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
